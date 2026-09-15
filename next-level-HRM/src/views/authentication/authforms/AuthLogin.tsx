@@ -5,6 +5,7 @@ import { Button } from 'src/components/ui/button';
 import { Checkbox } from 'src/components/ui/checkbox';
 import { Input } from 'src/components/ui/input';
 import { Label } from 'src/components/ui/label';
+import { api } from 'src/lib/apiClient';
 import { useAuth } from 'src/middleware/AuthContext';
 
 const AuthLogin = () => {
@@ -36,13 +37,9 @@ const AuthLogin = () => {
         throw new Error(loginData.message);
       }
 
-      const userRes = await fetch('https://lesson-starter-1.onrender.com/api/me', {
-        method: 'GET',
-        headers: { 'Authorization': `Bearer ${loginData.token}` },
-      });
-      const userData = await userRes.json();
+      const { response, data: userData } = await api.get('/api/me')
 
-      if (!userRes.ok) {
+      if (!response.ok) {
         throw new Error(userData.message);
       }
       login(loginData.token, userData);

@@ -1,21 +1,17 @@
 import userImg from '../../../assets/images/profile/user-1.jpg';
 import supportImg from '../../../assets/images/dashboard/customer-support-img.png';
 import { useEffect, useState } from 'react';
+import { api } from 'src/lib/apiClient';
+import { useAuth } from 'src/middleware/AuthContext';
 
 const ProfileWelcome = () => {
 
   const [employee, setEmployee] = useState<any[]>([]);
+  const { user } = useAuth();
 
   const fetchUserData = async () => {
-    const response = await fetch('https://lesson-starter-1.onrender.com/api/employees', {
-      method: 'GET',
-      headers: {
-        'Authorization': 'Bearer 030976c5-8795-497a-9520-c325816c6a3f'
-      },
-    });
-
-    const data = await response.json();
-
+    const { response, data } = await api.get('/api/employees')
+    if (!response.ok) throw new Error(data.message);
     console.log('data: ', data);
     if (data) {
       setEmployee(data);
@@ -33,12 +29,11 @@ const ProfileWelcome = () => {
           <img src={userImg} alt="user-img" width={50} height={50} className="rounded-full" />
         </div>
         <div className="flex flex-col gap-0.5">
-          <h5 className="card-title">{employee.length > 0 ? `Welcome back, ${employee[4].fullName}!` : 'Welcome back!'}</h5>
-          <p className="text-muted-foreground">Check your reports</p>
+          <h5 className="card-title">{user?.username ? `Welcome back, ${user.username}!` : 'Welcome back!'}</h5>
+          <p className="text-muted-foreground">You have {employee.length} employees</p>
         </div>
       </div>
 
-      {/* Support Image */}
       <div className="hidden sm:block absolute right-8 bottom-0">
         <img src={supportImg} alt="support-img" width={145} height={95} />
       </div>
