@@ -43,6 +43,12 @@ const Router = [
       { path: '404', element: <Error /> },
       { path: '*', element: <Navigate to="/auth/404" /> },
     ],
+  }, {
+    path: '/',
+    element: <BlankLayout />,
+    children: [
+
+    ],
   },
 ];
 

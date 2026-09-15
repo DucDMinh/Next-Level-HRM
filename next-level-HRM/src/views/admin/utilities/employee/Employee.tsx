@@ -25,7 +25,7 @@ const EmployeePage = () => {
   return (
     <>
       <div className="flex flex-col gap-6">
-        <DataTable data={employee as unknown as Record<string, unknown>[]} fetchEmployeeData={fetchEmployeeData} />
+        <DataTable data={employee} fetchEmployeeData={fetchEmployeeData} />
       </div>
     </>
   );

@@ -17,6 +17,7 @@ import {
   SelectValue,
 } from 'src/components/ui/select';
 import { toast } from 'sonner';
+import { api } from 'src/lib/apiClient';
 
 export interface EmployeeFormData {
   fullName: string;
@@ -65,20 +66,8 @@ export function AddEmployeeModal({ isOpen, onClose, fetchEmployeeData }: AddEmpl
     try {
       setIsSubmitting(true);
       formData.joinDate = new Date().toISOString();
-      const data = await fetch('https://lesson-starter-1.onrender.com/api/employees', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer 030976c5-8795-497a-9520-c325816c6a3f'
-        },
-        body: JSON.stringify(formData),
-      });
-      const result = await data.json();
-      console.log('Add Employee Response:', result);
-      if (!data.ok) {
-        toast.error(result.message || 'Failed to add employee');
-        return;
-      }
+      const { response, data } = await api.post('/api/employees', formData)
+      if (!response.ok) toast.error(data.message);
       toast.success('Employee added successfully!');
       setFormData({ fullName: '', email: '', position: '', role: 'User', username: '', joinDate: '', department: '', password: '', baseSalary: 0 });
       onClose();
@@ -156,20 +145,6 @@ export function AddEmployeeModal({ isOpen, onClose, fetchEmployeeData }: AddEmpl
             />
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-
-            <div className="space-y-2">
-              <Label htmlFor="position">Position</Label>
-              <Input
-                id="position"
-                name="position"
-                placeholder="e.g. Developer"
-                value={formData.position}
-                onChange={handleChange}
-                required
-                className="w-full"
-              />
-            </div>
-
             <div className="space-y-2">
               <Label>Role</Label>
               <Select
@@ -180,30 +155,11 @@ export function AddEmployeeModal({ isOpen, onClose, fetchEmployeeData }: AddEmpl
                   <SelectValue placeholder="Select role" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="admin">Admin</SelectItem>
-                  <SelectItem value="employee">Employee</SelectItem>
+                  <SelectItem value="admin">admin</SelectItem>
+                  <SelectItem value="employee">employee</SelectItem>
                 </SelectContent>
               </Select>
             </div>
-
-            <div className="space-y-2">
-              <Label>Department</Label>
-              <Select
-                value={formData.department}
-                onValueChange={(val) => handleSelectChange('department', val)}
-              >
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Select department" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="IT">IT</SelectItem>
-                  <SelectItem value="HR">HR</SelectItem>
-                  <SelectItem value="QA">QA</SelectItem>
-                  <SelectItem value="Engineering">Engineering</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-
           </div>
           <DialogFooter className="pt-4 mt-4 border-t">
             <Button type="button" variant="outline" onClick={onClose} disabled={isSubmitting}>

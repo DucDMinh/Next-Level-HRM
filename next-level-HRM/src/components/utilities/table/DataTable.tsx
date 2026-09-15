@@ -32,9 +32,11 @@ import {
 import { Label } from 'src/components/ui/label';
 import CardBox from '../../shared/CardBox';
 import { AddEmployeeModal } from 'src/components/modals/admin/employee/AddEmployeeModal';
+import { EditEmployeeModal } from 'src/components/modals/admin/employee/EditEmployeeModal';
 import { toast } from 'sonner';
 import { api } from 'src/lib/apiClient';
 import { useAuth } from 'src/middleware/AuthContext';
+import { Employee } from 'src/interface';
 
 const badgeColors = [
   'bg-blue-100 text-blue-700',
@@ -54,25 +56,18 @@ export function getColorForValue(value: string) {
   return badgeColors[index];
 }
 
-export interface EmployeeData extends Record<string, unknown> {
-  id?: string;
-  username?: string;
-  fullName?: string;
-  email?: string;
-  department?: string;
-  role?: string;
-}
-
 export const DataTable = ({
   data = [],
   fetchEmployeeData,
 }: {
-  data?: EmployeeData[];
+  data?: Employee[];
   fetchEmployeeData: () => void;
 }) => {
   const [globalFilter, setGlobalFilter] = useState('');
   const [sorting, setSorting] = useState<SortingState>([]);
   const [isAddEmpModalOpen, setIsAddEmpModalOpen] = useState(false);
+  const [isEditEmpModalOpen, setIsEditEmpModalOpen] = useState(false);
+  const [currentEmp, setCurrentEmp] = useState<Employee>()
   const { user } = useAuth()
 
   const renderValue = (val: unknown): React.ReactNode => {
@@ -101,7 +96,7 @@ export const DataTable = ({
     }
   };
 
-  const columns = useMemo<ColumnDef<EmployeeData, unknown>[]>(() => [
+  const columns = useMemo<ColumnDef<Employee, unknown>[]>(() => [
     {
       accessorKey: 'username',
       header: 'Username',
@@ -170,7 +165,14 @@ export const DataTable = ({
       enableSorting: false,
       cell: ({ row }) => (
         <div className="flex items-center gap-2">
-          <Button size={'sm'} variant={'lightprimary'} className="size-8! rounded-full">
+          <Button
+            size={'sm'}
+            variant={'lightprimary'}
+            className="size-8! rounded-full"
+            onClick={() => {
+              setIsEditEmpModalOpen(true)
+              setCurrentEmp(row.original as Employee);
+            }}>
             <Pencil className="size-5" />
           </Button>
           <Button
@@ -335,6 +337,14 @@ export const DataTable = ({
         <AddEmployeeModal
           isOpen={isAddEmpModalOpen}
           onClose={() => setIsAddEmpModalOpen(false)}
+          fetchEmployeeData={fetchEmployeeData}
+        />
+      )}
+      {isEditEmpModalOpen && (
+        <EditEmployeeModal
+          emp={currentEmp ?? null}
+          isOpen={isEditEmpModalOpen}
+          onClose={() => setIsEditEmpModalOpen(false)}
           fetchEmployeeData={fetchEmployeeData}
         />
       )}

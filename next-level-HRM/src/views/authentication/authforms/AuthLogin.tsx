@@ -48,6 +48,7 @@ const AuthLogin = () => {
       }
       login(loginData.token, userData);
       toast.success('Đăng nhập thành công!');
+      console.log(userData.role)
       navigate(userData.role === 'admin' ? '/admin' : '/');
 
     } catch (error: any) {

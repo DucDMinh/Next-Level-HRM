@@ -30,11 +30,11 @@ export const api = {
         });
     },
 
-    patch: (url: string, body?: any, options?: RequestInit) => {
+    put: (url: string, body?: any, options?: RequestInit) => {
         const isForm = body instanceof FormData;
         return request(url, {
             ...options,
-            method: "PATCH",
+            method: "PUT",
             body: isForm ? body : JSON.stringify(body)
         });
     },
