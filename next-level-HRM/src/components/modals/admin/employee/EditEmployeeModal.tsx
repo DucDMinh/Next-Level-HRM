@@ -19,6 +19,7 @@ import {
 import { toast } from 'sonner';
 import { api } from 'src/lib/apiClient';
 import { Employee } from 'src/interface';
+import { useAuth } from 'src/providers/AuthContext';
 
 export interface EmployeeFormData {
     fullName: string;
@@ -51,6 +52,7 @@ export function EditEmployeeModal({ emp, isOpen, onClose, fetchEmployeeData }: E
         baseSalary: 0,
     });
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const { user } = useAuth();
 
     const handleSaveChange = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -59,6 +61,9 @@ export function EditEmployeeModal({ emp, isOpen, onClose, fetchEmployeeData }: E
             const { response, data } = await api.put(`/api/employees/${emp?.id}`, formData);
             if (!response.ok) { throw new Error(data.message) }
             toast.success("Emp's Information has been change~")
+            if (emp?.id === user?.id) {
+                localStorage.setItem("userData", JSON.stringify(formData));
+            }
             onClose()
             fetchEmployeeData()
         } catch (error: any) {

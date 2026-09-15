@@ -6,7 +6,6 @@ const PrivateRoute = () => {
     if (!isAuthenticated) {
         return <Navigate to="/auth/auth2/login" replace />;
     }
-
     return <Outlet />;
 };
 

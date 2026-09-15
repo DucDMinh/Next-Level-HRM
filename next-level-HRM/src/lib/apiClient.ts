@@ -14,7 +14,17 @@ async function request(endpoint: string, options: RequestInit = {}) {
         ...options,
         headers
     });
+
     const data = await response.json().catch(() => ({}));
+
+    const errorMessage = data?.message || '';
+    const isTokenError = errorMessage === 'Invalid or expired token'
+    if (isTokenError) {
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("userData");
+        window.location.href = '/auth/auth2/login';
+        return { response, data };
+    }
 
     return { response, data };
 }

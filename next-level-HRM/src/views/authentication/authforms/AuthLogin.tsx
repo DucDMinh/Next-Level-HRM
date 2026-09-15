@@ -42,10 +42,10 @@ const AuthLogin = () => {
         </div>
         <div className="mb-4">
           <div className="mb-2 block">
-            <Label htmlFor="userpwd">Password</Label>
+            <Label htmlFor="password">Password</Label>
           </div>
           <Input
-            id="userpwd"
+            id="password"
             type="password"
             value={formData.password}
             onChange={(e) => setFormData({ ...formData, password: e.target.value })}

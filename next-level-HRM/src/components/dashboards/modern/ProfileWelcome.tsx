@@ -29,7 +29,7 @@ const ProfileWelcome = () => {
           <img src={userImg} alt="user-img" width={50} height={50} className="rounded-full" />
         </div>
         <div className="flex flex-col gap-0.5">
-          <h5 className="card-title">{user?.username ? `Welcome back, ${user.username}!` : 'Welcome back!'}</h5>
+          <h5 className="card-title">{user?.fullName ? `Welcome back, ${user.fullName}!` : 'Welcome back!'}</h5>
           <p className="text-muted-foreground">You have {employee.length} employees</p>
         </div>
       </div>

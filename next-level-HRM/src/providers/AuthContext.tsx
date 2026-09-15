@@ -1,8 +1,8 @@
 /* eslint-disable react-hooks/set-state-in-effect */
-"use client";
 import { User } from "src/interface";
 import { createContext, useContext, useState, ReactNode, useEffect } from "react";
 import { api } from "src/lib/apiClient";
+import { toast } from "sonner";
 
 interface AuthContextType {
     user: User | null;
@@ -25,15 +25,37 @@ export const userUtils = {
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const [isLogging, setLogging] = useState(false);
     const [isFetchingUser, setFetchingUser] = useState(false);
-    const [user, setUser] = useState<User | null>(null);
+    const [user, setUser] = useState<User | null>(() => {
+        const storedUser = localStorage.getItem("userData");
+        return storedUser ? JSON.parse(storedUser) : null;
+    });
     const [token, setToken] = useState<string | null>(userUtils.getAccessToken());
+
+    useEffect(() => {
+        const handleStorageChange = (e: StorageEvent) => {
+            if (e.key === 'userData') {
+                if (e.newValue) {
+                    setUser(JSON.parse(e.newValue));
+                } else {
+                    setUser(null);
+                }
+            }
+        };
+        window.addEventListener('storage', handleStorageChange);
+        return () => window.removeEventListener('storage', handleStorageChange);
+    }, []);
 
     useEffect(() => {
         if (token) {
             const getUserInfo = async () => {
                 try {
                     setFetchingUser(true)
-                    const { data: userData } = await api.get('/api/me');
+                    const { response, data: userData } = await api.get('/api/me');
+                    if (!response.ok) {
+                        toast.error(userData.message)
+                        return
+                    }
+                    localStorage.setItem("userData", JSON.stringify(userData));
                     setUser(userData);
                 } catch (error: any) {
                     alert(error.toString())
@@ -51,12 +73,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             setLogging(true);
             const { response, data } = await api.post('/login', { username: username, password: password })
             if (!response.ok) {
-                throw new Error(data.message);
+                toast.error(data.message)
             }
             setToken(data.token);
             userUtils.saveAccessToken(data.token);
         } catch (error: any) {
-            alert(error.toString())
+            toast.error(`error`, error)
         } finally {
             setLogging(false);
         }

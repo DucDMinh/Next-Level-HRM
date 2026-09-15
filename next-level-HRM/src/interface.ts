@@ -15,6 +15,7 @@ export interface User {
     username: string;
     role: string;
     token: string;
+    fullName: string
 }
 
 export interface AuthContextType {
