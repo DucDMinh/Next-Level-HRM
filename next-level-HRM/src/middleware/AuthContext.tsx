@@ -2,12 +2,14 @@
 "use client";
 import { User } from "src/interface";
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
+import { toast } from "sonner";
 
 interface AuthContextType {
     user: User | null;
     token: string | null;
     isAuthenticated: boolean;
     login: (token: string, userData: User) => void;
+    logout: () => void
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -31,8 +33,17 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         localStorage.setItem("userData", JSON.stringify(userData));
         document.cookie = `accessToken=${newToken}; path=/; max-age=604800; SameSite=Lax`;
     };
+
+    const logout = () => {
+        setToken(null);
+        setUser(null);
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("userData");
+        document.cookie = "accessToken=; path=/; max-age=0";
+        toast.success("Logout!");
+    }
     return (
-        <AuthContext.Provider value={{ user, token, isAuthenticated: !!token, login }}>
+        <AuthContext.Provider value={{ user, token, isAuthenticated: !!token, login, logout }}>
             {children}
         </AuthContext.Provider>
     );

@@ -47,7 +47,6 @@ export function EditEmployeeModal({ emp, isOpen, onClose, fetchEmployeeData }: E
         department: '',
         role: '',
         username: '',
-        joinDate: '',
         password: '',
         baseSalary: 0,
     });
@@ -78,7 +77,6 @@ export function EditEmployeeModal({ emp, isOpen, onClose, fetchEmployeeData }: E
             department: emp?.department || '',
             role: emp?.role || '',
             username: emp?.username || '',
-            joinDate: emp?.joinDate ? emp?.joinDate.split('T')[0] : '',
             password: '',
             baseSalary: emp?.baseSalary || 0,
         });

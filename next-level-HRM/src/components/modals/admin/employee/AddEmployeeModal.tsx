@@ -67,7 +67,10 @@ export function AddEmployeeModal({ isOpen, onClose, fetchEmployeeData }: AddEmpl
       setIsSubmitting(true);
       formData.joinDate = new Date().toISOString();
       const { response, data } = await api.post('/api/employees', formData)
-      if (!response.ok) toast.error(data.message);
+      if (!response.ok) {
+        toast.error(data.message || "Có lỗi xảy ra từ máy chủ!");
+        return;
+      }
       toast.success('Employee added successfully!');
       setFormData({ fullName: '', email: '', position: '', role: 'User', username: '', joinDate: '', department: '', password: '', baseSalary: 0 });
       onClose();
