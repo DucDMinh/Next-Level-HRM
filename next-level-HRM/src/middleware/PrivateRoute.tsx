@@ -9,7 +9,6 @@ const PrivateRoute = ({ requiredRole }: { requiredRole: string }) => {
     if (!token) {
         navigate('/auth/auth2/login');
     }
-    console.log(requiredRole)
     if (requiredRole && user?.role !== requiredRole) {
         navigate('/auth/404');
     }

@@ -34,14 +34,13 @@ const Router = [
     ],
   },
   {
-    path: '/',
+    path: '/auth',
     element: <BlankLayout />,
     children: [
-      { path: '/auth/auth2/login', element: <Login2 /> },
-      { path: '/auth/auth2/register', element: <Register2 /> },
-      { path: '/auth/maintenance', element: <Maintainance /> },
+      { path: 'auth2/login', element: <Login2 /> },
+      { path: 'auth2/register', element: <Register2 /> },
+      { path: 'maintenance', element: <Maintainance /> },
       { path: '404', element: <Error /> },
-      { path: '/auth/404', element: <Error /> },
       { path: '*', element: <Navigate to="/auth/404" /> },
     ],
   },

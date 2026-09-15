@@ -33,9 +33,10 @@ export interface EmployeeFormData {
 interface AddEmployeeModalProps {
   isOpen: boolean;
   onClose: () => void;
+  fetchEmployeeData: () => void
 }
 
-export function AddEmployeeModal({ isOpen, onClose }: AddEmployeeModalProps) {
+export function AddEmployeeModal({ isOpen, onClose, fetchEmployeeData }: AddEmployeeModalProps) {
   const [formData, setFormData] = useState<EmployeeFormData>({
     fullName: '',
     email: '',
@@ -81,7 +82,7 @@ export function AddEmployeeModal({ isOpen, onClose }: AddEmployeeModalProps) {
       toast.success('Employee added successfully!');
       setFormData({ fullName: '', email: '', position: '', role: 'User', username: '', joinDate: '', department: '', password: '', baseSalary: 0 });
       onClose();
-
+      fetchEmployeeData();
     } catch (error) {
       toast.error('Failed to add employee. Please try again.');
     } finally {

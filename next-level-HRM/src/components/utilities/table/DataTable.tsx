@@ -18,7 +18,7 @@ import {
   TableHeader,
   TableRow,
 } from 'src/components/ui/table';
-import type { CellContext, ColumnDef, SortingState } from '@tanstack/react-table';
+import type { ColumnDef, SortingState } from '@tanstack/react-table';
 import { Input } from 'src/components/ui/input';
 import { Button } from 'src/components/ui/button';
 import { ArrowUp, ArrowDown, ChevronsUpDown, Trash2, Pencil } from 'lucide-react';
@@ -32,6 +32,9 @@ import {
 import { Label } from 'src/components/ui/label';
 import CardBox from '../../shared/CardBox';
 import { AddEmployeeModal } from 'src/components/modals/admin/employee/AddEmployeeModal';
+import { toast } from 'sonner';
+import { api } from 'src/lib/apiClient';
+import { useAuth } from 'src/middleware/AuthContext';
 
 const badgeColors = [
   'bg-blue-100 text-blue-700',
@@ -51,21 +54,26 @@ export function getColorForValue(value: string) {
   return badgeColors[index];
 }
 
-export function toTitleCase(str: string) {
-  return str
-    .toLowerCase()
-    .split(' ')
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(' ');
+export interface EmployeeData extends Record<string, unknown> {
+  id?: string;
+  username?: string;
+  fullName?: string;
+  email?: string;
+  department?: string;
+  role?: string;
 }
 
-export const DataTable = <Employee extends Record<string, unknown>>({
+export const DataTable = ({
   data = [],
-  visibleColumns = ['username', 'fullName', 'email', 'department', 'role'],
-}: { data?: Employee[], visibleColumns?: string[]; }) => {
+  fetchEmployeeData,
+}: {
+  data?: EmployeeData[];
+  fetchEmployeeData: () => void;
+}) => {
   const [globalFilter, setGlobalFilter] = useState('');
   const [sorting, setSorting] = useState<SortingState>([]);
   const [isAddEmpModalOpen, setIsAddEmpModalOpen] = useState(false);
+  const { user } = useAuth()
 
   const renderValue = (val: unknown): React.ReactNode => {
     if (val === null || val === undefined) return '-';
@@ -78,86 +86,106 @@ export const DataTable = <Employee extends Record<string, unknown>>({
     return sizes.filter((size) => size <= data.length);
   }, [data.length]);
 
-  const columns = useMemo<ColumnDef<Employee, unknown>[]>(() => {
-    if (!data.length) return [];
+  const handleDeleteEmp = async (id: string) => {
+    try {
+      if (id === user?.id) {
+        toast.error(`Can not delete current user`)
+        return
+      }
+      const { response, data } = await api.delete(`/api/employees/${id}`)
+      if (!response.ok) toast.error(data.message)
+      toast.success(`User has been deleted`)
+      fetchEmployeeData();
+    } catch (error: any) {
+      toast.error(error.message);
+    }
+  };
 
-    const keys = Object.keys(data[0]).filter((key) => {
-      const val = data[0][key as keyof Employee];
-      const isVisible = visibleColumns ? visibleColumns.includes(key) : true;
-
-      return !Array.isArray(val) && isVisible;
-    });
-    const baseColumns = keys.map((col) => ({
-      accessorKey: col,
-      header: toTitleCase(col.replace(/([A-Z])/g, ' $1').trim()),
-      cell: (info: CellContext<Employee, unknown>) => {
-        const value = info.getValue();
-        if (
-          ['status', 'availability', 'gender', 'category', 'genre', 'position'].some((key) =>
-            col.toLowerCase().includes(key),
-          )
-        ) {
-          const cls = getColorForValue(String(value));
-
-          return (
-            <Badge
-              className={`px-2 py-1 rounded-full text-xs font-medium whitespace-nowrap ${cls}`}
-            >
-              {renderValue(value)}
-            </Badge>
-          );
-        }
-
-        if (
-          ['user', 'product', 'fullname', 'name', 'author'].some((key) =>
-            col.toLowerCase().includes(key),
-          )
-        ) {
-          const cls = getColorForValue(String(value));
-          return (
-            <div className="flex items-center gap-2">
-              <Badge
-                className={`size-10 flex items-center justify-center rounded-full shrink-0 ${cls}`}
-              >
-                {value ? String(value)[0]?.toUpperCase() : '?'}
-              </Badge>
-              <span className="text-gray-900 dark:text-white font-semibold max-w-50 truncate whitespace-nowrap">
-                {renderValue(value)}
-              </span>
-            </div>
-          );
-        }
-
-        return (
-          <span className="text-gray-900 dark:text-white font-medium max-w-50 truncate block ">
-            {renderValue(value)}
-          </span>
-        );
-      },
-      enableSorting: true,
-      enableGlobalFilter: true,
-    }));
-
-    const actionColumn: ColumnDef<Employee, unknown> = {
-      id: 'action',
-      header: 'Action',
-      enableSorting: false,
-      cell: ({ }) => {
+  const columns = useMemo<ColumnDef<EmployeeData, unknown>[]>(() => [
+    {
+      accessorKey: 'username',
+      header: 'Username',
+      cell: (info) => {
+        const value = info.getValue() as string;
+        const cls = getColorForValue(String(value || ''));
         return (
           <div className="flex items-center gap-2">
-            <Button size={'sm'} variant={'lightprimary'} className="size-8! rounded-full">
-              <Pencil className="size-5" />
-            </Button>
-            <Button size={'sm'} variant={'lighterror'} className="size-8! rounded-full">
-              <Trash2 className="size-5" />
-            </Button>
+            <Badge
+              className={`size-10 flex items-center justify-center rounded-full shrink-0 ${cls}`}
+            >
+              {value ? String(value)[0]?.toUpperCase() : '?'}
+            </Badge>
+            <span className="text-gray-900 dark:text-white font-semibold max-w-50 truncate whitespace-nowrap">
+              {renderValue(value)}
+            </span>
           </div>
         );
       },
-    };
+    },
+    {
+      accessorKey: 'fullName',
+      header: 'Full Name',
+      cell: (info) => (
+        <span className="text-gray-900 dark:text-white font-medium max-w-50 truncate block">
+          {renderValue(info.getValue())}
+        </span>
+      ),
+    },
+    {
+      accessorKey: 'email',
+      header: 'Email',
+      cell: (info) => (
+        <span className="text-gray-900 dark:text-white font-medium max-w-50 truncate block">
+          {renderValue(info.getValue())}
+        </span>
+      ),
+    },
+    {
+      accessorKey: 'department',
+      header: 'Department',
+      cell: (info) => (
+        <span className="text-gray-900 dark:text-white font-medium max-w-50 truncate block">
+          {renderValue(info.getValue())}
+        </span>
+      ),
+    },
+    {
+      accessorKey: 'role',
+      header: 'Role',
+      cell: (info) => {
+        const value = info.getValue() as string;
+        const cls = getColorForValue(String(value || ''));
+        return (
+          <Badge
+            className={`px-2 py-1 rounded-full text-xs font-medium whitespace-nowrap ${cls}`}
+          >
+            {renderValue(value)}
+          </Badge>
+        );
+      },
+    },
+    {
+      id: 'action',
+      header: 'Action',
+      enableSorting: false,
+      cell: ({ row }) => (
+        <div className="flex items-center gap-2">
+          <Button size={'sm'} variant={'lightprimary'} className="size-8! rounded-full">
+            <Pencil className="size-5" />
+          </Button>
+          <Button
+            size={'sm'}
+            variant={'lighterror'}
+            className="size-8! rounded-full"
+            onClick={() => handleDeleteEmp(row.original.id as string)}
+          >
+            <Trash2 className="size-5" />
+          </Button>
+        </div>
+      ),
+    },
+  ], []);
 
-    return [...baseColumns, actionColumn];
-  }, [data, visibleColumns]);
   const table = useReactTable({
     data,
     columns,
@@ -192,7 +220,7 @@ export const DataTable = <Employee extends Record<string, unknown>>({
                 <button
                   className="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary/90 transition-colors"
                   onClick={() => {
-                    setIsAddEmpModalOpen(true)
+                    setIsAddEmpModalOpen(true);
                   }}
                 >
                   + Add
@@ -307,6 +335,7 @@ export const DataTable = <Employee extends Record<string, unknown>>({
         <AddEmployeeModal
           isOpen={isAddEmpModalOpen}
           onClose={() => setIsAddEmpModalOpen(false)}
+          fetchEmployeeData={fetchEmployeeData}
         />
       )}
     </CardBox>

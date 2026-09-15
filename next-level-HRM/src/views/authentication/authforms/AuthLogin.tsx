@@ -37,7 +37,11 @@ const AuthLogin = () => {
         throw new Error(loginData.message);
       }
 
-      const { response, data: userData } = await api.get('/api/me')
+      const { response, data: userData } = await api.get('/api/me', {
+        headers: {
+          'Authorization': `Bearer ${loginData.token}`
+        }
+      })
 
       if (!response.ok) {
         throw new Error(userData.message);
