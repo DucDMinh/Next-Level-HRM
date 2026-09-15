@@ -15,11 +15,11 @@ const FullLogo = () => {
         x="45"
         y="26"
         fontFamily="sans-serif"
-        fontSize="20"
+        fontSize="24"
         fontWeight="bold"
         fill="currentColor"
       >
-        Next Level HRM
+        Next Level
       </text>
     </svg>
   );

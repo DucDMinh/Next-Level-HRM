@@ -1,62 +1,29 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router';
-import { toast } from 'sonner';
 import { Button } from 'src/components/ui/button';
 import { Checkbox } from 'src/components/ui/checkbox';
 import { Input } from 'src/components/ui/input';
 import { Label } from 'src/components/ui/label';
-import { api } from 'src/lib/apiClient';
-import { useAuth } from 'src/middleware/AuthContext';
+import { useAuth } from 'src/providers/AuthContext';
 
 const AuthLogin = () => {
-
-  const navigate = useNavigate();
-  const { login } = useAuth();
+  const navigation = useNavigate();
+  const { isAuthenticated, login, isLogging } = useAuth();
 
   const [formData, setFormData] = useState({
     username: '',
     password: '',
   });
 
-  const [isLoading, setIsLoading] = useState(false);
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigation('/');
+    }
+  }, [isAuthenticated])
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (isLoading) return;
-    setIsLoading(true);
-
-    try {
-      const loginRes = await fetch('https://lesson-starter-1.onrender.com/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
-      });
-      const loginData = await loginRes.json();
-
-      if (!loginRes.ok) {
-        throw new Error(loginData.message);
-      }
-
-      const { response, data: userData } = await api.get('/api/me', {
-        headers: {
-          'Authorization': `Bearer ${loginData.token}`
-        }
-      })
-
-      if (!response.ok) {
-        throw new Error(userData.message);
-      }
-      login(loginData.token, userData);
-      toast.success('Đăng nhập thành công!');
-      console.log(userData.role)
-      navigate(userData.role === 'admin' ? '/admin' : '/');
-
-    } catch (error: any) {
-      console.error('Login Failed: ', error);
-      toast.error(error.message || 'Đã có lỗi xảy ra, vui lòng thử lại.');
-    } finally {
-      setIsLoading(false);
-    }
+    login({ username: formData.username, password: formData.password });
   };
 
   return (
@@ -96,7 +63,7 @@ const AuthLogin = () => {
           </Link>
         </div>
         <Button className="w-full">
-          Sign in
+          {isLogging ? 'Loading...' : 'Sign in'}
         </Button>
       </form>
     </>

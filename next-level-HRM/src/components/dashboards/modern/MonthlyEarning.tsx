@@ -1,6 +1,6 @@
 
 
-import CardBox from "../../shared/CardBox"
+import CardBox from "src/components/shared/CardBox"
 
 import { Icon } from "@iconify/react/dist/iconify.js";
 import Chart from 'react-apexcharts'

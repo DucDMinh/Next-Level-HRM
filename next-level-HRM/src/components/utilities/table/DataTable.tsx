@@ -35,7 +35,7 @@ import { AddEmployeeModal } from 'src/components/modals/admin/employee/AddEmploy
 import { EditEmployeeModal } from 'src/components/modals/admin/employee/EditEmployeeModal';
 import { toast } from 'sonner';
 import { api } from 'src/lib/apiClient';
-import { useAuth } from 'src/middleware/AuthContext';
+import { useAuth } from 'src/providers/AuthContext';
 import { Employee } from 'src/interface';
 
 const badgeColors = [

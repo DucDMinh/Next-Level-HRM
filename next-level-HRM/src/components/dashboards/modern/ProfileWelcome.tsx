@@ -2,7 +2,7 @@ import userImg from '../../../assets/images/profile/user-1.jpg';
 import supportImg from '../../../assets/images/dashboard/customer-support-img.png';
 import { useEffect, useState } from 'react';
 import { api } from 'src/lib/apiClient';
-import { useAuth } from 'src/middleware/AuthContext';
+import { useAuth } from 'src/providers/AuthContext';
 
 const ProfileWelcome = () => {
 

@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 const BASE_URL = "https://lesson-starter-1.onrender.com";
+
 async function request(endpoint: string, options: RequestInit = {}) {
     const token = localStorage.getItem("accessToken");
     const headers = new Headers(options.headers || {});
