@@ -1,17 +1,18 @@
 import { DataTable } from 'src/components/utilities/table/DataTable';
 import { useEffect, useState } from 'react';
 import { Employee } from '../../../../interface';
+import { useAuth } from 'src/middleware/AuthContext';
 
 
 const EmployeePage = () => {
-
+  const { token } = useAuth();
   const [employee, setEmployee] = useState<Employee[]>([]);
   const fetchEmployeeData = async () => {
     try {
       const response = await fetch('https://lesson-starter-1.onrender.com/api/employees', {
         method: 'GET',
         headers: {
-          'Authorization': 'Bearer 030976c5-8795-497a-9520-c325816c6a3f'
+          'Authorization': `Bearer ${token}`
         },
       });
       const data = await response.json();

@@ -1,14 +1,17 @@
-import { Navigate, Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
+import { useAuth } from './AuthContext';
 
 const PrivateRoute = ({ requiredRole }: { requiredRole: string }) => {
     const token = Cookies.get('accessToken');
-    const userRole = localStorage.getItem('userRole');
+    const navigate = useNavigate();
+    const { user } = useAuth()
     if (!token) {
-        return <Navigate to="/auth/auth2/login" replace />;
+        navigate('/auth/auth2/login');
     }
-    if (requiredRole && userRole !== requiredRole) {
-        return <Navigate to="/404" replace />;
+    console.log(requiredRole)
+    if (requiredRole && user?.role !== requiredRole) {
+        navigate('/auth/404');
     }
     return <Outlet />;
 };

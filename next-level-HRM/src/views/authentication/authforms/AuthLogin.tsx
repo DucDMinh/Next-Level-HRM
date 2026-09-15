@@ -17,25 +17,43 @@ const AuthLogin = () => {
     password: '',
   });
 
+  const [isLoading, setIsLoading] = useState(false);
+
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const response = await fetch('https://lesson-starter-1.onrender.com/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(formData),
-    });
-    console.log('response: ', response)
-    const data = await response.json();
-    console.log('data: ', data)
-    if (response.ok) {
-      toast.success('Login successful');
-      login(data.accessToken, data.user);
-      navigate('/admin');
-    } else {
-      console.error('Login failed: ', data.message);
-      toast.error(data.message);
+    if (isLoading) return;
+    setIsLoading(true);
+
+    try {
+      const loginRes = await fetch('https://lesson-starter-1.onrender.com/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+      const loginData = await loginRes.json();
+
+      if (!loginRes.ok) {
+        throw new Error(loginData.message);
+      }
+
+      const userRes = await fetch('https://lesson-starter-1.onrender.com/api/me', {
+        method: 'GET',
+        headers: { 'Authorization': `Bearer ${loginData.token}` },
+      });
+      const userData = await userRes.json();
+
+      if (!userRes.ok) {
+        throw new Error(userData.message);
+      }
+      login(loginData.token, userData);
+      toast.success('Đăng nhập thành công!');
+      navigate(userData.role === 'admin' ? '/admin' : '/');
+
+    } catch (error: any) {
+      console.error('Login Failed: ', error);
+      toast.error(error.message || 'Đã có lỗi xảy ra, vui lòng thử lại.');
+    } finally {
+      setIsLoading(false);
     }
   };
 

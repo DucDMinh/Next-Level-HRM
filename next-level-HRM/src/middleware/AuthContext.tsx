@@ -1,16 +1,13 @@
 /* eslint-disable react-hooks/set-state-in-effect */
 "use client";
 import { User } from "src/interface";
-import { useNavigate } from "react-router";
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
-import { Toaster, toast } from 'sonner';
 
 interface AuthContextType {
     user: User | null;
     token: string | null;
     isAuthenticated: boolean;
     login: (token: string, userData: User) => void;
-    logout: () => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -18,7 +15,6 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const [user, setUser] = useState<User | null>(null);
     const [token, setToken] = useState<string | null>(null);
-    const router = useNavigate();
     useEffect(() => {
         const storedToken = localStorage.getItem("accessToken");
         const storedUser = localStorage.getItem("userData");
@@ -35,20 +31,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         localStorage.setItem("userData", JSON.stringify(userData));
         document.cookie = `accessToken=${newToken}; path=/; max-age=604800; SameSite=Lax`;
     };
-
-    const logout = () => {
-        setToken(null);
-        setUser(null);
-        localStorage.removeItem("accessToken");
-        localStorage.removeItem("userData");
-        document.cookie = "accessToken=; path=/; max-age=0";
-        toast.success("Đã đăng xuất thành công!");
-        router('/auth/auth2/login');
-    };
-
     return (
-        <AuthContext.Provider value={{ user, token, isAuthenticated: !!token, login, logout }}>
-            <Toaster duration={1500} richColors position="bottom-right" />
+        <AuthContext.Provider value={{ user, token, isAuthenticated: !!token, login }}>
             {children}
         </AuthContext.Provider>
     );
