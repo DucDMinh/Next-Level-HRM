@@ -22,11 +22,11 @@ const AttendanceHistory = () => {
         try {
             const { response, data } = await api.get(`/api/attendance`);
 
-            if (!response.ok) {
-                toast.error(data.message);
-                return;
+            if (!response.ok) throw new Error(data.message);
+            if (data) {
+                const reversedData = [...data].reverse();
+                setAttendanceData(reversedData);
             }
-            setAttendanceData(data || []);
         } catch (error: any) {
             toast.error(error.toString());
         } finally {

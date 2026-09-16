@@ -8,7 +8,7 @@ import {
 } from 'src/components/ui/table';
 import CardBox from "src/components/shared/CardBox"
 import { AttendanceData } from 'src/interface';
-import { Badge } from 'lucide-react';
+import { Badge } from 'src/components/ui/badge';
 
 export const AttendanceHistory = ({ attendanceData }: { attendanceData: AttendanceData[] }) => {
     const formatDate = (dateStr: string) => {

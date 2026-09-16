@@ -26,10 +26,7 @@ const Attendance = () => {
         try {
             const { response, data } = await api.get(`/api/attendance`);
 
-            if (!response.ok) {
-                toast.error(data.message);
-                return;
-            }
+            if (!response.ok) throw new Error(data.message);
             if (data && data.length > 0) {
                 for (let i = data.length - 1; i >= 0; i--) {
                     if (isToday(data[i].checkOut)) {
@@ -41,8 +38,10 @@ const Attendance = () => {
                     }
                 }
             }
-            setAttendanceData(data || []);
-
+            if (data) {
+                const reversedData = [...data].reverse();
+                setAttendanceData(reversedData);
+            }
         } catch (error: any) {
             toast.error(error.toString());
         } finally {
