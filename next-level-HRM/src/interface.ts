@@ -23,3 +23,11 @@ export interface AuthContextType {
     login: (userData: User) => void;
     logout: () => void;
 }
+
+export interface AttendanceData {
+    id: number,
+    employeeId: number,
+    date: string,
+    checkIn: string,
+    checkOut: string
+}

@@ -19,7 +19,10 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const userUtils = {
     getAccessToken: () => localStorage.getItem("accessToken") || null,
     saveAccessToken: (token: string) => localStorage.setItem("accessToken", token),
-    clearAccessToken: () => localStorage.removeItem('accessToken')
+    clearAccessToken: () => {
+        localStorage.removeItem('accessToken')
+        localStorage.removeItem('userData')
+    }
 }
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
@@ -39,7 +42,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
                 } else {
                     setUser(null);
                 }
+                return
             }
+            window.location.href = '/';
         };
         window.addEventListener('storage', handleStorageChange);
         return () => window.removeEventListener('storage', handleStorageChange);
