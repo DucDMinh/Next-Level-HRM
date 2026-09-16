@@ -16,7 +16,7 @@ const Login2 = Loadable(lazy(() => import('../views/authentication/auth2/Login')
 const Register2 = Loadable(lazy(() => import('../views/authentication/auth2/Register')));
 //Admin
 const Modern = Loadable(lazy(() => import('../views/admin/dashboards/Modern')));
-const UserProfile = Loadable(lazy(() => import('../views/admin/user-profile/UserProfile')));
+const AttendanceAdmin = Loadable(lazy(() => import('../views/admin/attendances/Attendance')));
 const Employee = Loadable(lazy(() => import('../views/admin/utilities/employee/Employee')));
 const SolarIcon = Loadable(lazy(() => import('../views/admin/icons/SolarIcon')));
 //User
@@ -33,7 +33,7 @@ const Router = [
         children: [
           { path: '', exact: true, element: <Modern /> },
           { path: 'utilities/employee', element: <Employee /> },
-          { path: 'user-profile', element: <UserProfile /> },
+          { path: 'attendances', element: <AttendanceAdmin /> },
           { path: 'icons/iconify', element: <SolarIcon /> },
         ],
       }

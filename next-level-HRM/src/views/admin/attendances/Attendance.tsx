@@ -6,11 +6,38 @@ import {
     TableHeader,
     TableRow,
 } from 'src/components/ui/table';
+import { Badge } from 'src/components/ui/badge';
 import CardBox from "src/components/shared/CardBox"
 import { AttendanceData } from 'src/interface';
-import { Badge } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { toast } from 'sonner';
+import { api } from 'src/lib/apiClient';
+import Spinner from '../spinner/Spinner';
 
-export const AttendanceHistory = ({ attendanceData }: { attendanceData: AttendanceData[] }) => {
+const AttendanceHistory = () => {
+    const [attendanceData, setAttendanceData] = useState<AttendanceData[]>([])
+    const [isLoading, setIsLoading] = useState(true);
+
+    const fetchAttendanceData = async () => {
+        try {
+            const { response, data } = await api.get(`/api/attendance`);
+
+            if (!response.ok) {
+                toast.error(data.message);
+                return;
+            }
+            setAttendanceData(data || []);
+        } catch (error: any) {
+            toast.error(error.toString());
+        } finally {
+            setIsLoading(false);
+        }
+    }
+
+    useEffect(() => {
+        fetchAttendanceData();
+    }, [])
+
     const formatDate = (dateStr: string) => {
         if (!dateStr) return '--';
         const date = new Date(dateStr);
@@ -43,6 +70,15 @@ export const AttendanceHistory = ({ attendanceData }: { attendanceData: Attendan
         if (checkIn && !checkOut) return { text: 'Missing Out', styles: 'bg-yellow-100 text-yellow-700' };
         return { text: 'Error', styles: 'bg-red-100 text-red-700' };
     };
+
+    if (isLoading) {
+        return (
+            <div className="flex flex-col items-center justify-center h-64 gap-3 text-gray-500">
+                <Spinner />
+            </div>
+        );
+    }
+
     return (
         <CardBox>
             <div className="p-4 border-b border-gray-100 dark:border-white/10">
@@ -114,3 +150,5 @@ export const AttendanceHistory = ({ attendanceData }: { attendanceData: Attendan
         </CardBox>
     )
 }
+
+export default AttendanceHistory;

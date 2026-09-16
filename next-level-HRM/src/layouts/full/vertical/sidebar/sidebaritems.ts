@@ -56,9 +56,9 @@ const SidebarContent: MenuItem[] = [
       },
       {
         id: uniqueId(),
-        name: 'User Profile',
+        name: 'Attendance',
         icon: 'solar:user-circle-linear',
-        url: '/admin/user-profile',
+        url: '/admin/attendances',
         isPro: false,
       },
     ],

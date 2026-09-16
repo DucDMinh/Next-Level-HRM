@@ -7,7 +7,12 @@ import { AttendanceData } from 'src/interface';
 import { toast } from 'sonner';
 import { api } from 'src/lib/apiClient';
 
-export const AttendanceStatus = ({ currentLogin, setCurrentLogin }: { currentLogin?: AttendanceData, setCurrentLogin: React.Dispatch<React.SetStateAction<AttendanceData | undefined>> }) => {
+export const AttendanceStatus = ({ currentLogin, setCurrentLogin, attendanceData, setAttendanceData }: {
+    currentLogin?: AttendanceData,
+    setCurrentLogin: React.Dispatch<React.SetStateAction<AttendanceData | undefined>>,
+    attendanceData: AttendanceData[]
+    setAttendanceData: React.Dispatch<React.SetStateAction<AttendanceData[]>>
+}) => {
     const [isChecking, setIsChecking] = useState(false);
     const getAdjustedTime = () => {
         return new Date(Date.now() - 7 * 60 * 60 * 1000);
@@ -50,6 +55,9 @@ export const AttendanceStatus = ({ currentLogin, setCurrentLogin }: { currentLog
                 toast.error(data.message)
                 return
             }
+            if (currentLogin) {
+                handleUpdateCheckOutById(currentLogin.id, 'checkOut', data.checkOut)
+            }
             setCurrentLogin(undefined)
             setIsChecking(false)
         } catch (error: any) {
@@ -68,6 +76,7 @@ export const AttendanceStatus = ({ currentLogin, setCurrentLogin }: { currentLog
                 return
             }
             setCurrentLogin(data)
+            setAttendanceData([...attendanceData, data])
             setIsChecking(false)
         } catch (error: any) {
 
@@ -75,6 +84,17 @@ export const AttendanceStatus = ({ currentLogin, setCurrentLogin }: { currentLog
             setIsChecking(false)
         }
     }
+
+    const handleUpdateCheckOutById = (recordId: number, key: string, value: string) => {
+        setAttendanceData(prevData => {
+            return prevData.map(item => {
+                if (item.id === recordId) {
+                    return { ...item, [key]: value };
+                }
+                return item;
+            });
+        });
+    };
 
     return (
         <CardBox>
@@ -112,7 +132,10 @@ export const AttendanceStatus = ({ currentLogin, setCurrentLogin }: { currentLog
                 <div className="flex-shrink-0">
                     {!currentLogin ? (
                         <Button
-                            onClick={() => { handleCheckIn() }}
+                            onClick={() => {
+                                handleCheckIn()
+                            }}
+                            disabled={isChecking}
                             size="lg"
                             className="bg-primary hover:bg-primary/90 text-white rounded-xl px-8 py-6 text-lg font-semibold shadow-lg shadow-primary/30 flex items-center gap-2 transition-all"
                         >
@@ -123,6 +146,7 @@ export const AttendanceStatus = ({ currentLogin, setCurrentLogin }: { currentLog
                         <Button
                             onClick={() => { handleCheckOut() }}
                             size="lg"
+                            disabled={isChecking}
                             variant="destructive"
                             className="rounded-xl px-8 py-6 text-lg font-semibold shadow-lg shadow-red-500/30 flex items-center gap-2 transition-all"
                         >
