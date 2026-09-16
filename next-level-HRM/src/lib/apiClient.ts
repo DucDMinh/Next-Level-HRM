@@ -50,6 +50,15 @@ export const api = {
         });
     },
 
+    patch: (url: string, body?: any, options?: RequestInit) => {
+        const isForm = body instanceof FormData;
+        return request(url, {
+            ...options,
+            method: "PATCH",
+            body: isForm ? body : JSON.stringify(body)
+        });
+    },
+
     delete: (url: string, options?: RequestInit) =>
         request(url, { ...options, method: "DELETE" }),
 };

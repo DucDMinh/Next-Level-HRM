@@ -16,9 +16,9 @@ const Login2 = Loadable(lazy(() => import('../views/authentication/auth2/Login')
 const Register2 = Loadable(lazy(() => import('../views/authentication/auth2/Register')));
 //Admin
 const Modern = Loadable(lazy(() => import('../views/admin/dashboards/Modern')));
-const AttendanceAdmin = Loadable(lazy(() => import('../views/admin/attendances/Attendance')));
+const AttendanceAdmin = Loadable(lazy(() => import('../views/admin/utilities/attendances/Attendance')));
 const Employee = Loadable(lazy(() => import('../views/admin/utilities/employee/Employee')));
-const SolarIcon = Loadable(lazy(() => import('../views/admin/icons/SolarIcon')));
+const LeaveRequestAdmin = Loadable(lazy(() => import('../views/admin/utilities/leave-requests/LeaveRequest')));
 //User
 const Attendance = Loadable(lazy(() => import('../views/(employee)/attendances/Attendance')))
 const LeaveRequest = Loadable(lazy(() => import('../views/(employee)/leave-request/LeaveRequest')))
@@ -33,8 +33,8 @@ const Router = [
         children: [
           { path: '', exact: true, element: <Modern /> },
           { path: 'utilities/employee', element: <Employee /> },
-          { path: 'attendances', element: <AttendanceAdmin /> },
-          { path: 'icons/iconify', element: <SolarIcon /> },
+          { path: 'utilities/attendances', element: <AttendanceAdmin /> },
+          { path: 'utilities/leave-requests', element: <LeaveRequestAdmin /> },
         ],
       }
     ],
