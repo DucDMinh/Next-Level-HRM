@@ -19,6 +19,7 @@ async function request(endpoint: string, options: RequestInit = {}) {
 
     const errorMessage = data?.message || '';
     const isTokenError = errorMessage === 'Invalid or expired token'
+        || errorMessage === 'Missing or malformed Authorization header'
     if (isTokenError) {
         localStorage.removeItem("accessToken");
         localStorage.removeItem("userData");

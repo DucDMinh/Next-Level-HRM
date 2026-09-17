@@ -19,6 +19,7 @@ const Modern = Loadable(lazy(() => import('../views/admin/dashboards/Modern')));
 const AttendanceAdmin = Loadable(lazy(() => import('../views/admin/utilities/attendances/Attendance')));
 const Employee = Loadable(lazy(() => import('../views/admin/utilities/employee/Employee')));
 const LeaveRequestAdmin = Loadable(lazy(() => import('../views/admin/utilities/leave-requests/LeaveRequest')));
+const PayrollAdmin = Loadable(lazy(() => import('../views/admin/utilities/payrolls/PayRollPage')));
 //User
 const Attendance = Loadable(lazy(() => import('../views/(employee)/attendances/Attendance')))
 const LeaveRequest = Loadable(lazy(() => import('../views/(employee)/leave-request/LeaveRequest')))
@@ -35,6 +36,7 @@ const Router = [
           { path: 'utilities/employee', element: <Employee /> },
           { path: 'utilities/attendances', element: <AttendanceAdmin /> },
           { path: 'utilities/leave-requests', element: <LeaveRequestAdmin /> },
+          { path: 'utilities/payrolls', element: <PayrollAdmin /> },
         ],
       }
     ],

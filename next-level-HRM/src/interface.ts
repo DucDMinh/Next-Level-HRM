@@ -41,3 +41,31 @@ export interface LeaveRequest {
     status: string,
     createdAt: string
 }
+
+export interface PayrollSummary {
+    employeeId: number,
+    fullName: string,
+    baseSalary: number,
+    standardWorkDays: number,
+    actualWorkDays: number,
+    meetsRequirement: boolean,
+    estimatedPay: number,
+    existingRecordId: number,
+    existingAdjustment: number,
+    existingNote: string,
+    existingActualWorkDays: number,
+    existingTotalPay: number
+}
+
+export interface PayrollRecord {
+    month: string,
+    employeeId: number,
+    actualWorkDays: number,
+    adjustment: number,
+    baseSalary: number,
+    createdAt: string,
+    id: number,
+    note: string,
+    standardWorkDays: number,
+    totalPay: number
+}

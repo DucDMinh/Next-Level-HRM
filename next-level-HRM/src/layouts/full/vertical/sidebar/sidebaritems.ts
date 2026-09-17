@@ -68,6 +68,13 @@ const SidebarContent: MenuItem[] = [
         url: '/admin/utilities/leave-requests',
         isPro: false,
       },
+      {
+        id: uniqueId(),
+        name: 'Payroll',
+        icon: 'solar:user-circle-linear',
+        url: '/admin/utilities/payrolls',
+        isPro: false,
+      },
     ],
   },
   {
