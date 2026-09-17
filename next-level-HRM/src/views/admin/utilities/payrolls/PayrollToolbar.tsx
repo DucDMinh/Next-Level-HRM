@@ -12,10 +12,9 @@ interface HeaderToolbarProp {
     standardDay: number | null;
     setStandardDay: (val: number) => void;
     handleSaveSetting: () => void,
-    isSaving: boolean,
 }
 
-export const PayrollToolbar = ({ payrollPeriod, setPayrollPeriod, standardDay, setStandardDay, handleSaveSetting, isSaving }: HeaderToolbarProp) => {
+export const PayrollToolbar = ({ payrollPeriod, setPayrollPeriod, standardDay, setStandardDay, handleSaveSetting }: HeaderToolbarProp) => {
     return (
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
             <div className="flex flex-col gap-1.5">
@@ -51,9 +50,8 @@ export const PayrollToolbar = ({ payrollPeriod, setPayrollPeriod, standardDay, s
                     onClick={() => {
                         handleSaveSetting();
                     }}
-                    disabled={isSaving}
                 >
-                    {isSaving ? <>Saving...</> : <>Save</>}
+                    Save
                 </Button>
             </div>
         </div>
