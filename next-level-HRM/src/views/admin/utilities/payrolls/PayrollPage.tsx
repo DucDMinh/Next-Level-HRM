@@ -12,8 +12,11 @@ import { PayrollSummaryTable } from './PayrollSummaryTable';
 import { PayrollRecordTable } from './PayrollRecordTable';
 import LocalSpinner from '../../spinner/LocalSpinner';
 import { usePayroll, formatMoney } from './usePayroll';
+import { useTranslation } from 'react-i18next';
 
 const PayrollPage = () => {
+    const { t } = useTranslation('admin/payroll/payroll');
+
     const {
         payrollPeriod, setPayrollPeriod,
         standardDay, setStandardDay,
@@ -42,48 +45,43 @@ const PayrollPage = () => {
                 />
             </div>
             <div className="p-2 relative w-full flex-1">
-                {isSaving ? (
-                    <div className="h-32 flex items-center justify-center text-gray-500">Loading...</div>
-                ) : (
-                    <Table className="w-full">
-                        <TableHeader>
-                            <TableRow className="bg-gray-50/50 dark:bg-white/5">
-                                <TableHead className="font-semibold">Employee</TableHead>
-                                <TableHead className="font-semibold text-center whitespace-nowrap">
-                                    {activeTab === 'pending' ? 'Actual Days' : 'Finalized Days'}
-                                </TableHead>
-                                <TableHead className="font-semibold text-right">Base Salary (₫)</TableHead>
-                                <TableHead className="font-semibold text-center w-28">Bonus/Penalty</TableHead>
-                                <TableHead className="font-semibold w-1/5">Note</TableHead>
-                                <TableHead className="font-semibold text-right whitespace-nowrap">
-                                    {activeTab === 'pending' ? 'Estimated (₫)' : 'Final Pay (₫)'}
-                                </TableHead>
-                                <TableHead className="font-semibold text-right w-44">Actions</TableHead>
-                            </TableRow>
-                        </TableHeader>
-
-                        <TableBody>
-                            {activeTab === 'pending' && pendingList.map((emp) => (
-                                <PayrollSummaryTable
-                                    key={emp.employeeId}
-                                    emp={emp}
-                                    formatMoney={formatMoney}
-                                    handleFinalize={handleFinalize}
-                                />
-                            ))}
-                            {activeTab === 'finalized' && recordData.map((record) => (
-                                <PayrollRecordTable
-                                    key={record.id}
-                                    summaryData={summaryData}
-                                    record={record}
-                                    formatMoney={formatMoney}
-                                    handleEditPayroll={handleEditPayroll}
-                                    handleFinalize={handleFinalize}
-                                />
-                            ))}
-                        </TableBody>
-                    </Table>
-                )}
+                <Table className="w-full">
+                    <TableHeader>
+                        <TableRow className="bg-gray-50/50 dark:bg-white/5">
+                            <TableHead className="font-semibold">{t('th_employee')}</TableHead>
+                            <TableHead className="font-semibold text-center whitespace-nowrap">
+                                {activeTab === 'pending' ? t('th_actual_days') : t('th_finalized_days')}
+                            </TableHead>
+                            <TableHead className="font-semibold text-right">{t('th_base_salary')}</TableHead>
+                            <TableHead className="font-semibold text-center w-28">{t('th_bonus_penalty')}</TableHead>
+                            <TableHead className="font-semibold w-1/5">{t('th_note')}</TableHead>
+                            <TableHead className="font-semibold text-right whitespace-nowrap">
+                                {activeTab === 'pending' ? t('th_estimated') : t('th_final_pay')}
+                            </TableHead>
+                            <TableHead className="font-semibold text-right w-44">{t('th_actions')}</TableHead>
+                        </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                        {activeTab === 'pending' && pendingList.map((emp) => (
+                            <PayrollSummaryTable
+                                key={emp.employeeId}
+                                emp={emp}
+                                formatMoney={formatMoney}
+                                handleFinalize={handleFinalize}
+                            />
+                        ))}
+                        {activeTab === 'finalized' && recordData.map((record) => (
+                            <PayrollRecordTable
+                                key={record.id}
+                                summaryData={summaryData}
+                                record={record}
+                                formatMoney={formatMoney}
+                                handleEditPayroll={handleEditPayroll}
+                                handleFinalize={handleFinalize}
+                            />
+                        ))}
+                    </TableBody>
+                </Table>
             </div>
         </CardBox>
     );

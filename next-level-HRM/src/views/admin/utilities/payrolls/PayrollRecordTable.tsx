@@ -1,16 +1,10 @@
-import {
-    Save,
-    RotateCcw,
-} from 'lucide-react';
+import { Save, RotateCcw } from 'lucide-react';
 import { useState } from 'react';
 import { Button } from 'src/components/ui/button';
 import { Input } from 'src/components/ui/input';
-
-import {
-    TableRow,
-    TableCell
-} from 'src/components/ui/table';
+import { TableRow, TableCell } from 'src/components/ui/table';
 import { PayrollRecord, PayrollSummary } from 'src/interface';
+import { useTranslation } from 'react-i18next';
 
 export const PayrollRecordTable = ({
     summaryData,
@@ -25,13 +19,15 @@ export const PayrollRecordTable = ({
     handleEditPayroll: (recordId: number, payload: { adjustment: number, note: string }) => void,
     handleFinalize: (employeeId: number, payload: { adjustment: number, note: string }) => void
 }) => {
+    const { t } = useTranslation('admin/payroll/payroll');
+
     const empName = summaryData.find((emp) => emp.employeeId === record.employeeId)?.fullName
     const [adjustment, setAdjustment] = useState<number>(record.adjustment || 0);
     const [note, setNote] = useState<string>(record.note || '');
     const isShort = record.actualWorkDays < record.standardWorkDays;
 
     const isDeleted = !empName;
-    const displayName = empName || "Deleted Employee";
+    const displayName = empName || t('deleted_employee');
 
     return (
         <TableRow
@@ -51,11 +47,11 @@ export const PayrollRecordTable = ({
                     </span>
                     <div className="flex items-center gap-2 mt-0.5">
                         <span className="block text-xs text-gray-400 dark:text-gray-500">
-                            ID: {record.employeeId}
+                            {t('id_prefix')}{record.employeeId}
                         </span>
                         {isDeleted && (
                             <span className="text-[9px] font-bold uppercase tracking-wider text-red-500 bg-red-100 dark:bg-red-500/10 px-1.5 py-0.5 rounded">
-                                Deleted
+                                {t('badge_deleted')}
                             </span>
                         )}
                     </div>
@@ -83,7 +79,7 @@ export const PayrollRecordTable = ({
                     value={adjustment || ''}
                     onChange={(e) => setAdjustment(Number(e.target.value))}
                     className="h-8 w-full text-right text-sm px-2"
-                    placeholder="± 0"
+                    placeholder={t('placeholder_adjustment')}
                 />
             </TableCell>
             <TableCell>
@@ -91,7 +87,7 @@ export const PayrollRecordTable = ({
                     value={note}
                     onChange={(e) => setNote(e.target.value)}
                     className="h-8 w-full text-sm px-2"
-                    placeholder="Note..."
+                    placeholder={t('placeholder_note')}
                 />
             </TableCell>
 
@@ -106,7 +102,7 @@ export const PayrollRecordTable = ({
                         size="sm"
                         variant="outline"
                         className="h-8 px-2 text-gray-600 hover:bg-primary hover:text-white disabled:opacity-50 disabled:cursor-not-allowed"
-                        title="Save Adjustment"
+                        title={t('title_save_adjustment')}
                         disabled={isDeleted}
                     >
                         <Save className="size-3.5" />
@@ -115,11 +111,11 @@ export const PayrollRecordTable = ({
                         onClick={() => { handleFinalize(record.employeeId, { adjustment, note }) }}
                         size="sm"
                         className="bg-amber-500 hover:bg-amber-600 text-white h-8 px-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                        title="Re-calculate based on new attendance"
+                        title={t('title_recalc')}
                         disabled={isDeleted}
                     >
                         <RotateCcw className="size-3.5 sm:mr-1" />
-                        <span className="hidden sm:inline">Re-calc</span>
+                        <span className="hidden sm:inline">{t('btn_recalc')}</span>
                     </Button>
                 </div>
             </TableCell>

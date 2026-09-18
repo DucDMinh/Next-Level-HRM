@@ -1,12 +1,10 @@
-import {
-    TableCell,
-    TableRow,
-} from 'src/components/ui/table';
+import { TableCell, TableRow } from 'src/components/ui/table';
 import { PayrollSummary } from 'src/interface';
 import { Input } from 'src/components/ui/input';
 import { Button } from 'src/components/ui/button';
 import { Save } from 'lucide-react';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 export const PayrollSummaryTable = ({
     emp,
@@ -17,12 +15,16 @@ export const PayrollSummaryTable = ({
     formatMoney: (amount: number) => string,
     handleFinalize: (id: number, payload: { adjustment: number, note: string }) => void;
 }) => {
+    const { t } = useTranslation('admin/payroll/payroll');
+
     const [adjustment, setAdjustment] = useState<number>(emp.existingAdjustment || 0);
     const [note, setNote] = useState<string>(emp.existingNote || '');
     const isShort = emp.actualWorkDays < emp.standardWorkDays;
+
     const estimatePay = (emp: PayrollSummary) => {
         return Math.trunc(emp.baseSalary / emp.standardWorkDays * emp.actualWorkDays + adjustment)
     }
+
     return (
         <TableRow className="hover:bg-gray-50 dark:hover:bg-white/5 group">
             <TableCell>
@@ -43,7 +45,7 @@ export const PayrollSummaryTable = ({
                     value={adjustment || ''}
                     onChange={(e) => setAdjustment(Number(e.target.value))}
                     className="h-8 w-full text-right text-sm px-2"
-                    placeholder="± 0"
+                    placeholder={t('placeholder_adjustment')}
                 />
             </TableCell>
             <TableCell>
@@ -51,7 +53,7 @@ export const PayrollSummaryTable = ({
                     value={note}
                     onChange={(e) => setNote(e.target.value)}
                     className="h-8 w-full text-sm px-2"
-                    placeholder="Note..."
+                    placeholder={t('placeholder_note')}
                 />
             </TableCell>
             <TableCell className="text-right font-bold text-primary text-base">
@@ -63,7 +65,7 @@ export const PayrollSummaryTable = ({
                     size="sm"
                     className="bg-primary hover:bg-primary/90 text-white h-8"
                 >
-                    <Save className="size-4 sm:mr-1.5" /> <span className="hidden sm:inline">Finalize</span>
+                    <Save className="size-4 sm:mr-1.5" /> <span className="hidden sm:inline">{t('btn_finalize')}</span>
                 </Button>
             </TableCell>
         </TableRow>

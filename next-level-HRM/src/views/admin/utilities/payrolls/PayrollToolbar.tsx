@@ -1,10 +1,8 @@
 import { Label } from 'src/components/ui/label';
-import {
-    Calendar,
-    Settings
-} from 'lucide-react';
+import { Calendar, Settings } from 'lucide-react';
 import { Button } from 'src/components/ui/button';
 import { Input } from 'src/components/ui/input';
+import { useTranslation } from 'react-i18next';
 
 interface HeaderToolbarProp {
     payrollPeriod: string,
@@ -15,16 +13,18 @@ interface HeaderToolbarProp {
 }
 
 export const PayrollToolbar = ({ payrollPeriod, setPayrollPeriod, standardDay, setStandardDay, handleSaveSetting }: HeaderToolbarProp) => {
+    const { t } = useTranslation('admin/payroll/payroll');
+
     return (
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
             <div className="flex flex-col gap-1.5">
-                <h2 className="text-xl font-semibold text-gray-800 dark:text-white">Payroll Summary</h2>
-                <p className="text-sm text-gray-500">Manage and finalize monthly employee payroll</p>
+                <h2 className="text-xl font-semibold text-gray-800 dark:text-white">{t('toolbar_title')}</h2>
+                <p className="text-sm text-gray-500">{t('toolbar_subtitle')}</p>
             </div>
 
             <div className="flex flex-col sm:flex-row items-end gap-4">
                 <div className="flex flex-col gap-2 w-full sm:w-48">
-                    <Label className="text-xs text-gray-500 uppercase font-semibold">Payroll Period</Label>
+                    <Label className="text-xs text-gray-500 uppercase font-semibold">{t('label_payroll_period')}</Label>
                     <div className="relative">
                         <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
                         <input
@@ -37,7 +37,7 @@ export const PayrollToolbar = ({ payrollPeriod, setPayrollPeriod, standardDay, s
                 </div>
                 <div className="flex flex-col gap-2 w-full sm:w-40">
                     <Label className="text-xs text-gray-500 uppercase font-semibold flex items-center gap-1">
-                        <Settings className="size-3" /> Standard Days
+                        <Settings className="size-3" /> {t('label_standard_days')}
                     </Label>
                     <Input
                         type="number"
@@ -51,7 +51,7 @@ export const PayrollToolbar = ({ payrollPeriod, setPayrollPeriod, standardDay, s
                         handleSaveSetting();
                     }}
                 >
-                    Save
+                    {t('btn_save')}
                 </Button>
             </div>
         </div>
