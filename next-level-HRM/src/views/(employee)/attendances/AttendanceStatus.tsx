@@ -26,7 +26,6 @@ export const AttendanceStatus = ({ currentLogin, setCurrentLogin, attendanceData
     }, []);
 
     const checkIn = useMemo(() => {
-        console.log(currentLogin?.checkIn)
         return currentLogin?.checkIn ? new Date(currentLogin.checkIn.replace('Z', '')) : undefined;
     }, [currentLogin]);
 
