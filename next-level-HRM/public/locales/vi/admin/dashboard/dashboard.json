@@ -1,0 +1,18 @@
+{
+    "welcome_back": "Chào mừng trở lại, Quản lý! 👋",
+    "today_date": "Hôm nay là Thứ Sáu, 18 tháng 09, 2026.",
+    "total_employees": "Tổng số nhân viên",
+    "action_needed": "Cần xử lý",
+    "requests": "yêu cầu",
+    "estimated_payroll": "Ước tính quỹ lương",
+    "pending_leave_requests": "Đơn xin nghỉ chờ duyệt",
+    "view_all": "Xem tất cả",
+    "employee_id": "Nhân viên #{{id}}",
+    "days": "ngày",
+    "approve": "Phê duyệt",
+    "reject": "Từ chối",
+    "quick_access": "Truy cập nhanh",
+    "employee_list": "Danh sách nhân viên",
+    "timesheet": "Bảng chấm công",
+    "finalize_payroll": "Chốt lương (Tháng {{month}})"
+}

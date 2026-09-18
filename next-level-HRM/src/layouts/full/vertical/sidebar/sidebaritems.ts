@@ -33,10 +33,10 @@ import { uniqueId } from 'lodash';
 
 const SidebarContent: MenuItem[] = [
   {
-    heading: 'Home',
+    heading: 'heading_home',
     children: [
       {
-        name: 'Dashboard',
+        name: `menu_dashboard`,
         icon: 'solar:widget-2-linear',
         id: uniqueId(),
         url: '/admin',
@@ -46,48 +46,37 @@ const SidebarContent: MenuItem[] = [
   },
 
   {
-    heading: 'pages',
+    heading: 'heading_pages',
     children: [
       {
-        name: 'Employee',
+        name: 'menu_employee',
         icon: 'solar:users-group-rounded-linear',
         id: uniqueId(),
         url: '/admin/utilities/employee',
       },
       {
         id: uniqueId(),
-        name: 'Attendance',
+        name: 'menu_attendance',
         icon: 'solar:calendar-mark-linear',
         url: '/admin/utilities/attendances',
         isPro: false,
       },
       {
         id: uniqueId(),
-        name: 'Leave Request',
+        name: 'menu_leave_request',
         icon: 'solar:document-add-linear',
         url: '/admin/utilities/leave-requests',
         isPro: false,
       },
       {
         id: uniqueId(),
-        name: 'Payroll',
+        name: 'menu_payroll',
         icon: 'solar:wallet-money-linear',
         url: '/admin/utilities/payrolls',
         isPro: false,
       },
     ],
   },
-  {
-    heading: 'Account',
-    children: [
-      {
-        name: 'Settings',
-        icon: 'solar:settings-2-linear',
-        id: uniqueId(),
-        url: '/admin/account/settings',
-      },
-    ]
-  }
 ];
 
 export default SidebarContent;

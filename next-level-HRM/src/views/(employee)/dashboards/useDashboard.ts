@@ -61,19 +61,19 @@ export const useDashboard = () => {
             }
         }
     };
-
+    const loadData = async () => {
+        setIsFetching(true);
+        try {
+            const promises = [fetchMyData(), fetchMyAttendanceData(), fetchLeaveRequest(), fetchPayroll()];
+            await Promise.all(promises);
+        } catch (error: any) {
+            toast.error(error.message);
+        } finally {
+            setIsFetching(false);
+        }
+    };
     useEffect(() => {
-        const loadData = async () => {
-            setIsFetching(true);
-            try {
-                const promises = [fetchMyData(), fetchMyAttendanceData(), fetchLeaveRequest(), fetchPayroll()];
-                await Promise.all(promises);
-            } catch (error: any) {
-                toast.error(error.message);
-            } finally {
-                setIsFetching(false);
-            }
-        };
+
         loadData()
     }, [])
 
@@ -93,6 +93,6 @@ export const useDashboard = () => {
         time,
         lastLogin,
         leaveRequest,
-        payroll
+        payroll, loadData
     }
 }

@@ -6,7 +6,8 @@ import {
     CheckCircle2,
     LogOut,
     Wallet,
-    Calendar
+    Calendar,
+    RefreshCw
 } from 'lucide-react';
 import CardBox from 'src/components/shared/CardBox';
 import { Button } from 'src/components/ui/button';
@@ -14,6 +15,7 @@ import { Link } from 'react-router-dom';
 import { useDashboard } from './useDashboard';
 import Spinner from 'src/views/admin/spinner/Spinner';
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 
 const formatTime = (isoString?: string) => {
     if (!isoString) return '--:--';
@@ -25,21 +27,21 @@ const formatTime = (isoString?: string) => {
 };
 
 const EmployeeDashboard = () => {
+    const { t } = useTranslation('common');
     const {
         myData,
         isFetching,
         time,
-        lastLogin, leaveRequest, payroll
+        lastLogin, leaveRequest, payroll,
+        loadData
     } = useDashboard()
 
     useEffect(() => {
         console.log(`checkIn: ${lastLogin}`)
     }, [])
 
-    if (isFetching) {
-        return (
-            <Spinner />
-        )
+    if (isFetching && !myData) {
+        return <Spinner />
     }
 
     return (
@@ -47,12 +49,22 @@ const EmployeeDashboard = () => {
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                 <div>
                     <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
-                        Good morning, {myData?.fullName}! ☀️
+                        {t('greeting')}, {myData?.fullName}! ☀️
                     </h1>
                 </div>
                 <div className="flex gap-2">
-                    <Button variant="outline" className="bg-white dark:bg-gray-900 shadow-sm border-gray-200" asChild>
-                        <Link to="/leave-request">+ Request Leave</Link>
+                    <Button
+                        variant="outline"
+                        className="bg-white dark:bg-gray-900 shadow-sm border-gray-200"
+                        onClick={loadData}
+                        disabled={isFetching}
+                    >
+                        <RefreshCw className={`size-4 mr-2 ${isFetching ? 'animate-spin text-primary' : 'text-gray-500'}`} />
+                        Refresh
+                    </Button>
+
+                    <Button variant="outline" className="bg-white dark:bg-gray-900 shadow-sm border-gray-200 text-primary" asChild>
+                        <Link to="/employee/leave-requests/new">+ Request Leave</Link>
                     </Button>
                 </div>
             </div>

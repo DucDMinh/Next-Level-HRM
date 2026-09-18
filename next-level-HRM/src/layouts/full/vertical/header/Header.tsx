@@ -9,6 +9,7 @@ import { useTheme } from 'src/components/provider/theme-provider';
 import { Sheet, SheetContent, SheetTitle } from 'src/components/ui/sheet';
 import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
 import Search from './Search';
+import LanguageSwitcher from 'src/components/LanguageSwitcher';
 
 const Header = () => {
   const { theme, setTheme } = useTheme();
@@ -59,9 +60,8 @@ const Header = () => {
   return (
     <>
       <header
-        className={`sticky top-0 z-[2] ${
-          isSticky ? 'bg-white dark:bg-dark shadow-md fixed w-full' : 'bg-transparent'
-        }`}
+        className={`sticky top-0 z-[2] ${isSticky ? 'bg-white dark:bg-dark shadow-md fixed w-full' : 'bg-transparent'
+          }`}
       >
         <nav className="rounded-none bg-transparent dark:bg-transparent py-4 px-6 !max-w-full flex justify-between items-center">
           {/* Mobile Toggle Icon */}
@@ -83,7 +83,7 @@ const Header = () => {
 
           <div className="xl:!block !hidden md:!hidden">
             <div className="flex gap-0 items-center">
-              {/* Theme Toggle */}
+              <LanguageSwitcher />
               {theme === 'light' ? (
                 <div
                   className="hover:text-primary px-15 group dark:hover:text-primary focus:ring-0 rounded-full flex justify-center items-center cursor-pointer text-foreground dark:text-muted-foreground relative"
@@ -94,7 +94,6 @@ const Header = () => {
                   </span>
                 </div>
               ) : (
-                // Dark Mode Button
                 <div
                   className="hover:text-primary px-15 dark:hover:text-primary focus:ring-0 rounded-full flex justify-center items-center cursor-pointer text-foreground dark:text-muted-foreground group relative"
                   onClick={toggleMode}
@@ -108,11 +107,7 @@ const Header = () => {
                   </span>
                 </div>
               )}
-
-              {/* Messages Dropdown */}
               <Messages />
-
-              {/* Profile Dropdown */}
               <Profile />
             </div>
           </div>

@@ -4,8 +4,9 @@ import { Icon } from '@iconify/react';
 import FullLogo from '../../shared/logo/FullLogo';
 import { Link, useLocation } from 'react-router';
 import { useTheme } from 'src/components/provider/theme-provider';
-import { AMLogo, AMMenu, AMMenuItem, AMSidebar, AMSubmenu } from 'tailwind-sidebar';
+import { AMLogo, AMMenu, AMMenuItem, AMSidebar } from 'tailwind-sidebar';
 import 'tailwind-sidebar/styles.css';
+import { useTranslation } from 'react-i18next';
 
 interface SidebarItemType {
   heading?: string
@@ -22,6 +23,7 @@ interface SidebarItemType {
 const renderSidebarItems = (
   items: SidebarItemType[],
   currentPath: string,
+  t: any,
   onClose?: () => void,
   isSubItem: boolean = false,
 ) => {
@@ -39,27 +41,12 @@ const renderSidebarItems = (
       return (
         <div className="mb-1" key={item.heading}>
           <AMMenu
-            subHeading={item.heading}
+            subHeading={t(item.heading)}
             ClassName="hide-menu leading-21 text-sidebar-foreground font-bold uppercase text-xs dark:text-sidebar-foreground"
           />
         </div>
       );
     }
-
-    // Submenu
-    if (item.children?.length) {
-      return (
-        <AMSubmenu
-          key={item.id}
-          icon={iconElement}
-          title={item.name}
-          ClassName="mt-0.5 text-sidebar-foreground dark:text-sidebar-foreground"
-        >
-          {renderSidebarItems(item.children, currentPath, onClose, true)}
-        </AMSubmenu>
-      );
-    }
-
     const linkTarget = item.url?.startsWith('https') ? '_blank' : '_self';
 
     const itemClassNames = isSubItem
@@ -83,7 +70,7 @@ const renderSidebarItems = (
           component={Link}
           className={`${itemClassNames}`}
         >
-          <span className="truncate flex-1">{item.title || item.name}</span>
+          <span className="truncate flex-1">{t((item.title || item.name) as string)}</span>
         </AMMenuItem>
       </div>
     );
@@ -94,8 +81,7 @@ const SidebarLayout = ({ onClose }: { onClose?: () => void }) => {
   const location = useLocation();
   const pathname = location.pathname;
   const { theme } = useTheme();
-
-  // Only allow "light" or "dark" for AMSidebar
+  const { t } = useTranslation('admin/dashboard/sidebar');
   const sidebarMode = theme === 'light' || theme === 'dark' ? theme : undefined;
 
   return (
@@ -127,6 +113,7 @@ const SidebarLayout = ({ onClose }: { onClose?: () => void }) => {
                   ...(section.children || []),
                 ],
                 pathname,
+                t,
                 onClose,
               )}
             </div>

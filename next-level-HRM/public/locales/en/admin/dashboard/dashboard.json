@@ -1,0 +1,18 @@
+{
+    "welcome_back": "Welcome back, Manager! 👋",
+    "today_date": "Today is Friday, September 18, 2026.",
+    "total_employees": "Total Employees",
+    "action_needed": "Action Needed",
+    "requests": "requests",
+    "estimated_payroll": "Estimated Payroll",
+    "pending_leave_requests": "Pending Leave Requests",
+    "view_all": "View All",
+    "employee_id": "Employee #{{id}}",
+    "days": "days",
+    "approve": "Approve",
+    "reject": "Reject",
+    "quick_access": "Quick Access",
+    "employee_list": "Employee List",
+    "timesheet": "Timesheet",
+    "finalize_payroll": "Finalize Payroll (Month {{month}})"
+}

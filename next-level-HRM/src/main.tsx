@@ -2,6 +2,7 @@ import { Suspense } from 'react'
 import { createRoot } from 'react-dom/client'
 import './css/globals.css'
 import App from './App.tsx'
+import './i18n'
 import Spinner from './views/admin/spinner/Spinner.tsx'
 import { AuthProvider } from './providers/AuthContext.tsx'
 

@@ -12,8 +12,10 @@ import { Button } from 'src/components/ui/button';
 import { Link } from 'react-router-dom';
 import { formatMoney, useDashboard } from './useDashboard';
 import Spinner from '../spinner/Spinner';
+import { useTranslation } from 'react-i18next';
 
 const AdminDashboard = () => {
+    const { t } = useTranslation('admin/dashboard/dashboard');
 
     const {
         employeeData,
@@ -29,15 +31,16 @@ const AdminDashboard = () => {
             <Spinner />
         )
     }
+
     return (
         <div className="space-y-6">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                 <div>
                     <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
-                        Welcome back, Manager! 👋
+                        {t('welcome_back')}
                     </h1>
                     <p className="text-sm text-gray-500 mt-1">
-                        Today is Friday, September 18, 2026.
+                        {t('today_date')}
                     </p>
                 </div>
             </div>
@@ -47,7 +50,7 @@ const AdminDashboard = () => {
                         <Users className="size-6" />
                     </div>
                     <div>
-                        <p className="text-sm text-gray-500 font-medium">Total Employees</p>
+                        <p className="text-sm text-gray-500 font-medium">{t('total_employees')}</p>
                         <p className="text-2xl font-bold text-gray-900 dark:text-white">{employeeData?.length}</p>
                     </div>
                 </CardBox>
@@ -56,10 +59,10 @@ const AdminDashboard = () => {
                         <CalendarClock className="size-6" />
                     </div>
                     <div>
-                        <p className="text-sm text-amber-600/80 font-bold uppercase tracking-wider text-[11px]">Action Needed</p>
+                        <p className="text-sm text-amber-600/80 font-bold uppercase tracking-wider text-[11px]">{t('action_needed')}</p>
                         <div className="flex justify-center items-baseline gap-1.5">
                             <p className="text-2xl font-black text-amber-600">{leaveRequest?.length}</p>
-                            <span className="text-sm font-medium text-amber-600/80">requests</span>
+                            <span className="text-sm font-medium text-amber-600/80">{t('requests')}</span>
                         </div>
                     </div>
                 </CardBox>
@@ -68,7 +71,7 @@ const AdminDashboard = () => {
                         <Wallet className="size-6" />
                     </div>
                     <div>
-                        <p className="text-sm text-gray-500 font-medium">Estimated Payroll</p>
+                        <p className="text-sm text-gray-500 font-medium">{t('estimated_payroll')}</p>
                         <p className="text-2xl font-bold text-gray-900 dark:text-white">
                             {formatMoney(totalPayroll(recordData))} <span className="text-sm font-normal text-gray-400">₫</span>
                         </p>
@@ -78,9 +81,9 @@ const AdminDashboard = () => {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <CardBox className="lg:col-span-2 flex flex-col h-full">
                     <div className="p-5 border-b border-gray-100 dark:border-gray-800 flex justify-between items-center">
-                        <h2 className="text-lg font-bold text-gray-800 dark:text-white">Pending Leave Requests</h2>
+                        <h2 className="text-lg font-bold text-gray-800 dark:text-white">{t('pending_leave_requests')}</h2>
                         <Link to="/admin/utilities/leave-requests" className="text-sm text-primary hover:underline flex items-center font-medium">
-                            View All <ChevronRight className="size-4 ml-0.5" />
+                            {t('view_all')} <ChevronRight className="size-4 ml-0.5" />
                         </Link>
                     </div>
                     <div className="flex-1 p-0">
@@ -93,7 +96,7 @@ const AdminDashboard = () => {
 
                                     <div className="flex flex-col justify-center">
                                         <p className="font-bold text-gray-900 dark:text-white leading-none">
-                                            Employee #{req.employeeId}
+                                            {t('employee_id', { id: req.employeeId })}
                                         </p>
 
                                         <div className="flex items-center gap-2 text-xs mt-1.5">
@@ -104,7 +107,7 @@ const AdminDashboard = () => {
                                                 {req.reason}
                                             </span>
                                             <span className="text-gray-400">
-                                                • {calculateDays(req.fromDate, req.toDate)} days ({formatDate(req.fromDate)} - {formatDate(req.toDate)})
+                                                • {calculateDays(req.fromDate, req.toDate)} {t('days')} ({formatDate(req.fromDate)} - {formatDate(req.toDate)})
                                             </span>
                                         </div>
                                     </div>
@@ -115,14 +118,14 @@ const AdminDashboard = () => {
                                         onClick={() => { handleUpdateStatus(req.id, 'approved') }}
                                         size="icon"
                                         variant="outline"
-                                        className="size-8 text-green-600 border-green-200 hover:bg-green-50 hover:text-green-700 bg-white" title="Approve">
+                                        className="size-8 text-green-600 border-green-200 hover:bg-green-50 hover:text-green-700 bg-white" title={t('approve')}>
                                         <Check className="size-4" />
                                     </Button>
                                     <Button
                                         onClick={() => { handleUpdateStatus(req.id, 'rejected') }}
                                         size="icon"
                                         variant="outline"
-                                        className="size-8 text-red-500 border-red-200 hover:bg-red-50 hover:text-red-600 bg-white" title="Reject">
+                                        className="size-8 text-red-500 border-red-200 hover:bg-red-50 hover:text-red-600 bg-white" title={t('reject')}>
                                         <X className="size-4" />
                                     </Button>
                                 </div>
@@ -132,24 +135,25 @@ const AdminDashboard = () => {
                 </CardBox>
                 <div className="space-y-6">
                     <CardBox className="p-5">
-                        <h2 className="text-lg font-bold text-gray-800 dark:text-white mb-4">Quick Access</h2>
+                        <h2 className="text-lg font-bold text-gray-800 dark:text-white mb-4">{t('quick_access')}</h2>
                         <div className="grid grid-cols-2 gap-3">
                             <Link to="/admin/utilities/employee" className="p-3 rounded-lg border border-gray-100 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-900/50 hover:border-primary/30 hover:bg-primary/5 transition-all flex flex-col items-center justify-center gap-2 text-center group">
                                 <Users className="size-5 text-gray-400 group-hover:text-primary transition-colors" />
-                                <span className="text-xs font-medium text-gray-600 dark:text-gray-300 group-hover:text-primary">Employee List</span>
+                                <span className="text-xs font-medium text-gray-600 dark:text-gray-300 group-hover:text-primary">{t('employee_list')}</span>
                             </Link>
                             <Link to="/admin/utilities/attendances" className="p-3 rounded-lg border border-gray-100 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-900/50 hover:border-primary/30 hover:bg-primary/5 transition-all flex flex-col items-center justify-center gap-2 text-center group">
                                 <UserCheck className="size-5 text-gray-400 group-hover:text-primary transition-colors" />
-                                <span className="text-xs font-medium text-gray-600 dark:text-gray-300 group-hover:text-primary">Timesheet</span>
+                                <span className="text-xs font-medium text-gray-600 dark:text-gray-300 group-hover:text-primary">{t('timesheet')}</span>
                             </Link>
                             <Link to="/admin/utilities/payrolls" className="p-3 rounded-lg border border-gray-100 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-900/50 hover:border-primary/30 hover:bg-primary/5 transition-all flex flex-col items-center justify-center gap-2 text-center group col-span-2">
                                 <Wallet className="size-5 text-gray-400 group-hover:text-primary transition-colors" />
-                                <span className="text-xs font-medium text-gray-600 dark:text-gray-300 group-hover:text-primary">Finalize Payroll (Month {new Date().getMonth() + 1})</span>
+                                <span className="text-xs font-medium text-gray-600 dark:text-gray-300 group-hover:text-primary">
+                                    {t('finalize_payroll', { month: new Date().getMonth() + 1 })}
+                                </span>
                             </Link>
                         </div>
                     </CardBox>
                 </div>
-
             </div>
         </div>
     );
