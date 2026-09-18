@@ -1,0 +1,13 @@
+{
+    "attendance_history": "Lịch sử chấm công",
+    "search_placeholder": "Tìm kiếm theo mã nhân viên...",
+    "table_employee_id": "Mã nhân viên",
+    "table_date": "Ngày",
+    "table_clock_in": "Giờ vào",
+    "table_clock_out": "Giờ ra",
+    "table_total_hours": "Tổng giờ",
+    "table_status": "Trạng thái",
+    "status_completed": "Hoàn thành",
+    "status_missing_out": "Thiếu giờ ra",
+    "status_error": "Lỗi"
+}

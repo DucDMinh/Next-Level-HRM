@@ -1,0 +1,13 @@
+{
+    "attendance_history": "Attendance History",
+    "search_placeholder": "Searching Employee Id...",
+    "table_employee_id": "Employee ID",
+    "table_date": "Date",
+    "table_clock_in": "Clock In",
+    "table_clock_out": "Clock Out",
+    "table_total_hours": "Total Hours",
+    "table_status": "Status",
+    "status_completed": "Completed",
+    "status_missing_out": "Missing Out",
+    "status_error": "Error"
+}

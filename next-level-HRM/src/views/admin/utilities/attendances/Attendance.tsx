@@ -14,8 +14,11 @@ import { toast } from 'sonner';
 import { api } from 'src/lib/apiClient';
 import Spinner from '../../spinner/Spinner';
 import { Search } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 const AttendanceHistory = () => {
+    const { t } = useTranslation('admin/attendance/attendance');
+
     const [attendanceData, setAttendanceData] = useState<AttendanceData[]>([])
     const [isLoading, setIsLoading] = useState(true);
     const [searchQuery, setSearchQuery] = useState('');
@@ -73,9 +76,9 @@ const AttendanceHistory = () => {
     });
 
     const getStatus = (checkIn?: string, checkOut?: string) => {
-        if (checkIn && checkOut) return { text: 'Completed', styles: 'bg-green-100 text-green-700' };
-        if (checkIn && !checkOut) return { text: 'Missing Out', styles: 'bg-yellow-100 text-yellow-700' };
-        return { text: 'Error', styles: 'bg-red-100 text-red-700' };
+        if (checkIn && checkOut) return { key: 'status_completed', styles: 'bg-green-100 text-green-700' };
+        if (checkIn && !checkOut) return { key: 'status_missing_out', styles: 'bg-yellow-100 text-yellow-700' };
+        return { key: 'status_error', styles: 'bg-red-100 text-red-700' };
     };
 
     const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -94,7 +97,7 @@ const AttendanceHistory = () => {
         <CardBox>
             <div className="p-4 border-b border-gray-100 dark:border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <h3 className="text-lg font-semibold text-gray-800 dark:text-white">
-                    Attendance History
+                    {t('attendance_history')}
                 </h3>
                 <div className="relative w-full sm:w-72">
                     <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
@@ -102,7 +105,7 @@ const AttendanceHistory = () => {
                     </div>
                     <input
                         type="text"
-                        placeholder="Searching Employee Id..."
+                        placeholder={t('search_placeholder')}
                         value={searchQuery}
                         onChange={handleSearchChange}
                         className="block w-full rounded-xl border-none bg-gray-50/50 py-2.5 pl-10 pr-4 text-sm font-medium text-gray-900 transition-all focus:bg-white focus:ring-2 focus:ring-brand-500/50 dark:bg-gray-800/50 dark:text-white placeholder:text-gray-400"
@@ -114,22 +117,22 @@ const AttendanceHistory = () => {
                     <TableHeader>
                         <TableRow className="border-b-0 sticky hover:bg-transparent dark:hover:bg-transparent">
                             <TableHead className="sticky top-0 z-10 bg-gray-100 dark:bg-gray-800 font-semibold text-gray-700 dark:text-gray-300">
-                                Employee ID
+                                {t('table_employee_id')}
                             </TableHead>
                             <TableHead className="sticky top-0 z-10 bg-gray-100 dark:bg-gray-800 font-semibold text-gray-700 dark:text-gray-300">
-                                Date
+                                {t('table_date')}
                             </TableHead>
                             <TableHead className="sticky top-0 z-10 bg-gray-100 dark:bg-gray-800 font-semibold text-gray-700 dark:text-gray-300">
-                                Clock In
+                                {t('table_clock_in')}
                             </TableHead>
                             <TableHead className="sticky top-0 z-10 bg-gray-100 dark:bg-gray-800 font-semibold text-gray-700 dark:text-gray-300">
-                                Clock Out
+                                {t('table_clock_out')}
                             </TableHead>
                             <TableHead className="sticky top-0 z-10 bg-gray-100 dark:bg-gray-800 font-semibold text-gray-700 dark:text-gray-300">
-                                Total Hours
+                                {t('table_total_hours')}
                             </TableHead>
                             <TableHead className="sticky top-0 z-10 bg-gray-100 dark:bg-gray-800 font-semibold text-gray-700 dark:text-gray-300">
-                                Status
+                                {t('table_status')}
                             </TableHead>
                         </TableRow>
                     </TableHeader>
@@ -160,7 +163,7 @@ const AttendanceHistory = () => {
 
                                     <TableCell>
                                         <Badge className={`px-2.5 py-1 rounded-full text-xs font-medium whitespace-nowrap ${status.styles}`}>
-                                            {status.text}
+                                            {t(status.key)}
                                         </Badge>
                                     </TableCell>
                                 </TableRow>
