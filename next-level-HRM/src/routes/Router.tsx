@@ -19,10 +19,12 @@ const Modern = Loadable(lazy(() => import('../views/admin/dashboards/Modern')));
 const AttendanceAdmin = Loadable(lazy(() => import('../views/admin/utilities/attendances/Attendance')));
 const Employee = Loadable(lazy(() => import('../views/admin/utilities/employee/Employee')));
 const LeaveRequestAdmin = Loadable(lazy(() => import('../views/admin/utilities/leave-requests/LeaveRequest')));
-const PayrollAdmin = Loadable(lazy(() => import('../views/admin/utilities/payrolls/PayRollPage')));
+const PayrollAdmin = Loadable(lazy(() => import('../views/admin/utilities/payrolls/PayrollPage')));
 //User
+const Dashboard = Loadable(lazy(() => import('../views/(employee)/dashboards/Dashboard')))
 const Attendance = Loadable(lazy(() => import('../views/(employee)/attendances/Attendance')))
 const LeaveRequest = Loadable(lazy(() => import('../views/(employee)/leave-request/LeaveRequest')))
+const Payroll = Loadable(lazy(() => import('../views/(employee)/payrolls/PayrollPage')))
 const Router = [
   {
     path: '/admin',
@@ -59,8 +61,10 @@ const Router = [
         path: '',
         element: <NavigateHandler><ClientLayout /></NavigateHandler>,
         children: [
+          { path: '', exact: true, element: <Dashboard /> },
           { path: 'attendance', element: <Attendance /> },
-          { path: 'leave-request', element: <LeaveRequest /> }
+          { path: 'leave-request', element: <LeaveRequest /> },
+          { path: 'payroll', element: <Payroll /> }
         ],
       }
     ],
