@@ -50,28 +50,28 @@ const SidebarContent: MenuItem[] = [
     children: [
       {
         name: 'Employee',
-        icon: 'solar:server-linear',
+        icon: 'solar:users-group-rounded-linear',
         id: uniqueId(),
         url: '/admin/utilities/employee',
       },
       {
         id: uniqueId(),
         name: 'Attendance',
-        icon: 'solar:user-circle-linear',
+        icon: 'solar:calendar-mark-linear',
         url: '/admin/utilities/attendances',
         isPro: false,
       },
       {
         id: uniqueId(),
         name: 'Leave Request',
-        icon: 'solar:user-circle-linear',
+        icon: 'solar:document-add-linear',
         url: '/admin/utilities/leave-requests',
         isPro: false,
       },
       {
         id: uniqueId(),
         name: 'Payroll',
-        icon: 'solar:user-circle-linear',
+        icon: 'solar:wallet-money-linear',
         url: '/admin/utilities/payrolls',
         isPro: false,
       },

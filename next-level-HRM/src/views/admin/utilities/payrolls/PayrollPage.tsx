@@ -20,7 +20,7 @@ const PayrollPage = () => {
         isSaving,
         activeTab, setActiveTab,
         summaryData, recordData, pendingList,
-        handleSaveSetting, handleFinalize
+        handleSaveSetting, handleFinalize, handleEditPayroll
     } = usePayroll();
 
     return (
@@ -77,6 +77,8 @@ const PayrollPage = () => {
                                     summaryData={summaryData}
                                     record={record}
                                     formatMoney={formatMoney}
+                                    handleEditPayroll={handleEditPayroll}
+                                    handleFinalize={handleFinalize}
                                 />
                             ))}
                         </TableBody>

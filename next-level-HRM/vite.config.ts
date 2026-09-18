@@ -35,11 +35,11 @@ export default defineConfig({
         },
     },
     build: {
-        outDir: 'dist', // ✅ this is required for Netlify
+        outDir: 'dist',
     },
     plugins: [svgr(), react()],
     server: {
         port: 4100,
-        open: true,
+        open: false,
     },
 });

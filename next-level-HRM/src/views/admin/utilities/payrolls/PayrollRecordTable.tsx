@@ -15,11 +15,15 @@ import { PayrollRecord, PayrollSummary } from 'src/interface';
 export const PayrollRecordTable = ({
     summaryData,
     record,
-    formatMoney
+    formatMoney,
+    handleEditPayroll,
+    handleFinalize
 }: {
     summaryData: PayrollSummary[],
     record: PayrollRecord,
-    formatMoney: (amount: number) => string
+    formatMoney: (amount: number) => string,
+    handleEditPayroll: (recordId: number, payload: { adjustment: number, note: string }) => void,
+    handleFinalize: (employeeId: number, payload: { adjustment: number, note: string }) => void
 }) => {
     const empName = summaryData.find((emp) => emp.employeeId === record.employeeId)?.fullName
     const [adjustment, setAdjustment] = useState<number>(record.adjustment || 0);
@@ -98,6 +102,7 @@ export const PayrollRecordTable = ({
             <TableCell className="text-right">
                 <div className="flex items-center justify-end gap-1.5">
                     <Button
+                        onClick={() => { handleEditPayroll(record.id, { adjustment, note }) }}
                         size="sm"
                         variant="outline"
                         className="h-8 px-2 text-gray-600 hover:bg-primary hover:text-white disabled:opacity-50 disabled:cursor-not-allowed"
@@ -107,6 +112,7 @@ export const PayrollRecordTable = ({
                         <Save className="size-3.5" />
                     </Button>
                     <Button
+                        onClick={() => { handleFinalize(record.employeeId, { adjustment, note }) }}
                         size="sm"
                         className="bg-amber-500 hover:bg-amber-600 text-white h-8 px-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                         title="Re-calculate based on new attendance"

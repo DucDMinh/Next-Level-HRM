@@ -91,6 +91,23 @@ export const usePayroll = () => {
         }
     };
 
+    const handleEditPayroll = async (recordId: number, payload: { adjustment: number, note: string }) => {
+        try {
+            setIsSaving(true);
+            const { response, data } = await api.patch(`/api/payroll/${recordId}`, {
+                adjustment: payload.adjustment,
+                note: payload.note,
+            });
+            if (!response.ok) throw new Error(data.message);
+            await Promise.all([fetchSummaryData(), fetchRecordData()]);
+            toast.success("Saved!")
+        } catch (error: any) {
+            toast.error(error.message);
+        } finally {
+            setIsSaving(false);
+        }
+    }
+
     const pendingList = summaryData.filter(emp => emp.existingRecordId === null);
 
     return {
@@ -105,6 +122,7 @@ export const usePayroll = () => {
         recordData,
         pendingList,
         handleSaveSetting,
-        handleFinalize
+        handleFinalize,
+        handleEditPayroll
     };
 };
