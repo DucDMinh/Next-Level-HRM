@@ -29,6 +29,7 @@
     "@svgr/rollup": "8.1.0",
     "@tabler/icons-react": "^3.34.1",
     "@tanstack/react-table": "^8.21.3",
+    "antd": "^6.6.4",
     "apexcharts": "^5.3.5",
     "chance": "^1.1.13",
     "class-variance-authority": "^0.7.1",

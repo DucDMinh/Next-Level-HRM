@@ -1,0 +1,18 @@
+{
+    "error_delete_current_user": "Không thể xóa người dùng hiện tại",
+    "success_user_deleted": "Người dùng đã được xóa",
+    "col_username": "Tên đăng nhập",
+    "col_fullname": "Họ và tên",
+    "col_email": "Email",
+    "col_department": "Phòng ban",
+    "col_role": "Vai trò",
+    "col_action": "Thao tác",
+    "delete_confirm_title": "Xóa nhân viên",
+    "delete_confirm_desc": "Bạn có chắc chắn muốn xóa nhân viên này không?",
+    "btn_yes": "Có",
+    "btn_no": "Không",
+    "table_title": "Bảng dữ liệu nhân viên",
+    "search_placeholder": "Tìm kiếm dữ liệu...",
+    "btn_add": "+ Thêm mới",
+    "pagination_total": "Trang {{current}} trên {{totalPage}} ({{total}} bản ghi)"
+}
