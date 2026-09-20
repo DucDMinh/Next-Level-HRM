@@ -1,4 +1,5 @@
 import { Link } from "react-router";
+import { useTranslation } from "react-i18next";
 import CardBox from "src/components/shared/CardBox";
 
 import AuthLogin from "../authforms/AuthLogin";
@@ -8,6 +9,8 @@ import FullLogo from "src/layouts/full/shared/logo/FullLogo";
 
 
 const Login = () => {
+  const { t } = useTranslation('auth/login/login');
+
   return (
     <>
       <div className="relative overflow-hidden h-screen bg-lightprimary dark:bg-darkprimary">
@@ -16,15 +19,15 @@ const Login = () => {
             <div className="mx-auto mb-6">
               <FullLogo />
             </div>
-            <SocialButtons title="or sign in with" />
+            <SocialButtons title={t('social_title')} />
             <AuthLogin />
             <div className="flex gap-2 text-base text-ld font-medium mt-6 items-center justify-center">
-              <p>New to HRM?</p>
+              <p>{t('new_to_hrm')}</p>
               <Link
                 to={"/auth/auth2/register"}
                 className="text-primary text-sm font-medium"
               >
-                Create an account
+                {t('create_account')}
               </Link>
             </div>
           </CardBox>

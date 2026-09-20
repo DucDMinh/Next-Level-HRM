@@ -12,9 +12,10 @@ import CardBox from "src/components/shared/CardBox"
 import Spinner from 'src/views/admin/spinner/Spinner';
 import { LeaveRequest } from 'src/interface';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 export const LeaveRequestHistory = ({ isLoading, leaveRequestData }: { isLoading: boolean, leaveRequestData: LeaveRequest[] }) => {
-
+    const { t } = useTranslation('client/leave-request/leave-request');
     const [filterStatus, setFilterStatus] = useState<string>('all');
     const filteredData = leaveRequestData.filter((request) => {
         if (filterStatus === 'all') return true;
@@ -27,7 +28,7 @@ export const LeaveRequestHistory = ({ isLoading, leaveRequestData }: { isLoading
             <CardBox className="h-full">
                 <div className="p-6 border-b border-gray-100 dark:border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     <h3 className="text-lg font-semibold text-gray-800 dark:text-white">
-                        History & Status
+                        {t('title_history')}
                     </h3>
                     <div className="relative w-full sm:w-48">
                         <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
@@ -38,10 +39,10 @@ export const LeaveRequestHistory = ({ isLoading, leaveRequestData }: { isLoading
                             onChange={(e) => setFilterStatus(e.target.value)}
                             className="block w-full appearance-none rounded-xl border-none bg-gray-50/50 py-2.5 pl-10 pr-8 text-sm font-medium text-gray-900 transition-all focus:bg-white focus:ring-2 focus:ring-primary/50 dark:bg-gray-800/50 dark:text-white outline-none cursor-pointer"
                         >
-                            <option value="all">All Statuses</option>
-                            <option value="pending">Pending</option>
-                            <option value="approved">Approved</option>
-                            <option value="rejected">Rejected</option>
+                            <option value="all">{t('filter_all')}</option>
+                            <option value="pending">{t('filter_pending')}</option>
+                            <option value="approved">{t('filter_approved')}</option>
+                            <option value="rejected">{t('filter_rejected')}</option>
                         </select>
                     </div>
                 </div>
@@ -51,10 +52,10 @@ export const LeaveRequestHistory = ({ isLoading, leaveRequestData }: { isLoading
                         <Table>
                             <TableHeader>
                                 <TableRow className="sticky bg-gray-50/50 dark:bg-white/5 hover:bg-transparent">
-                                    <TableHead className="font-semibold">Request ID</TableHead>
-                                    <TableHead className="font-semibold">Leave Period</TableHead>
-                                    <TableHead className="font-semibold min-w-[200px]">Reason</TableHead>
-                                    <TableHead className="font-semibold text-left">Status</TableHead>
+                                    <TableHead className="font-semibold">{t('th_request_id')}</TableHead>
+                                    <TableHead className="font-semibold">{t('th_leave_period')}</TableHead>
+                                    <TableHead className="font-semibold min-w-[200px]">{t('th_reason')}</TableHead>
+                                    <TableHead className="font-semibold text-left">{t('th_status')}</TableHead>
                                 </TableRow>
                             </TableHeader>
 
@@ -73,14 +74,14 @@ export const LeaveRequestHistory = ({ isLoading, leaveRequestData }: { isLoading
 
                                             <TableCell className="text-gray-600 dark:text-gray-300 text-sm">
                                                 <div className="flex flex-col">
-                                                    <span>From: <span className="font-medium">{request.fromDate || '--'}</span></span>
-                                                    <span>To: <span className="font-medium ml-4.5">{request.toDate || '--'}</span></span>
+                                                    <span>{t('period_from')} <span className="font-medium">{request.fromDate || '--'}</span></span>
+                                                    <span>{t('period_to')} <span className="font-medium ml-4.5">{request.toDate || '--'}</span></span>
                                                 </div>
                                             </TableCell>
 
                                             <TableCell className="text-gray-600 dark:text-gray-400 text-sm">
                                                 <p className="line-clamp-2 max-w-[250px]" title={request.reason}>
-                                                    {request.reason || 'No reason provided'}
+                                                    {request.reason || t('no_reason')}
                                                 </p>
                                             </TableCell>
 
@@ -98,7 +99,9 @@ export const LeaveRequestHistory = ({ isLoading, leaveRequestData }: { isLoading
                                                     {currentStatus === 'rejected' && <XCircle className="size-3.5" />}
 
                                                     <span className="capitalize">
-                                                        {currentStatus || 'Unknown'}
+                                                        {['pending', 'approved', 'rejected'].includes(currentStatus)
+                                                            ? t(`status_${currentStatus}`)
+                                                            : t('status_unknown')}
                                                     </span>
                                                 </Badge>
                                             </TableCell>
@@ -108,7 +111,7 @@ export const LeaveRequestHistory = ({ isLoading, leaveRequestData }: { isLoading
                                 {filteredData.length === 0 && (
                                     <TableRow>
                                         <TableCell colSpan={4} className="h-24 text-center text-gray-500">
-                                            No requests found.
+                                            {t('no_requests')}
                                         </TableCell>
                                     </TableRow>
                                 )}

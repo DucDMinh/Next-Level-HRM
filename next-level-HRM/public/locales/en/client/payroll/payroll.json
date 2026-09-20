@@ -1,0 +1,17 @@
+{
+    "title_payslip": "Payslip for {{month}}/{{year}}",
+    "badge_finalized": "Finalized",
+    "badge_pending": "Pending",
+    "label_payroll_period": "Payroll Period",
+    "label_base_salary": "Base Salary",
+    "label_actual_standard_days": "Actual / Standard Days",
+    "label_adjustments": "Adjustments / Penalties",
+    "label_net_pay": "Net Pay",
+    "title_breakdown": "Salary Breakdown Details",
+    "row_salary_by_days": "Salary by Work Days",
+    "row_salary_by_days_desc": "({{rate}} / day) × {{days}} days",
+    "row_other_adjustments": "Other Adjustments (Bonus / Penalty)",
+    "note_prefix": "Note: {{note}}",
+    "row_total_net": "Total Net Income",
+    "no_data": "No data"
+}

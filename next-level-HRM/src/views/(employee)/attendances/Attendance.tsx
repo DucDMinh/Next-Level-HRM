@@ -64,7 +64,6 @@ const Attendance = () => {
             <AttendanceStatus
                 currentLogin={currentLogin ?? undefined}
                 setCurrentLogin={setCurrentLogin}
-                attendanceData={attendanceData}
                 setAttendanceData={setAttendanceData}
             />
             <AttendanceHistory

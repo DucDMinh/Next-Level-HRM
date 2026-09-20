@@ -9,8 +9,10 @@ import {
 import CardBox from "src/components/shared/CardBox"
 import { AttendanceData } from 'src/interface';
 import { Badge } from 'src/components/ui/badge';
+import { useTranslation } from 'react-i18next';
 
 export const AttendanceHistory = ({ attendanceData }: { attendanceData: AttendanceData[] }) => {
+    const { t } = useTranslation('client/attendance/attendance');
     const formatDate = (dateStr: string) => {
         if (!dateStr) return '--';
         const date = new Date(dateStr);
@@ -39,15 +41,15 @@ export const AttendanceHistory = ({ attendanceData }: { attendanceData: Attendan
     };
 
     const getStatus = (checkIn?: string, checkOut?: string) => {
-        if (checkIn && checkOut) return { text: 'Completed', styles: 'bg-green-100 text-green-700' };
-        if (checkIn && !checkOut) return { text: 'Missing Out', styles: 'bg-yellow-100 text-yellow-700' };
-        return { text: 'Error', styles: 'bg-red-100 text-red-700' };
+        if (checkIn && checkOut) return { text: t('status_completed'), styles: 'bg-green-100 text-green-700' };
+        if (checkIn && !checkOut) return { text: t('status_missing_out'), styles: 'bg-yellow-100 text-yellow-700' };
+        return { text: t('status_error'), styles: 'bg-red-100 text-red-700' };
     };
     return (
         <CardBox>
             <div className="p-4 border-b border-gray-100 dark:border-white/10">
                 <h3 className="text-lg font-semibold text-gray-800 dark:text-white">
-                    Attendance History (This Month)
+                    {t('title_history')}
                 </h3>
             </div>
             <div className="overflow-auto max-h-[400px] relative rounded-b-xl scrollbar-thin">
@@ -55,22 +57,22 @@ export const AttendanceHistory = ({ attendanceData }: { attendanceData: Attendan
                     <TableHeader>
                         <TableRow className="border-b-0 sticky hover:bg-transparent dark:hover:bg-transparent">
                             <TableHead className="sticky top-0 z-10 bg-gray-100 dark:bg-gray-800 font-semibold text-gray-700 dark:text-gray-300">
-                                Employee ID
+                                {t('th_employee_id')}
                             </TableHead>
                             <TableHead className="sticky top-0 z-10 bg-gray-100 dark:bg-gray-800 font-semibold text-gray-700 dark:text-gray-300">
-                                Date
+                                {t('th_date')}
                             </TableHead>
                             <TableHead className="sticky top-0 z-10 bg-gray-100 dark:bg-gray-800 font-semibold text-gray-700 dark:text-gray-300">
-                                Clock In
+                                {t('th_clock_in')}
                             </TableHead>
                             <TableHead className="sticky top-0 z-10 bg-gray-100 dark:bg-gray-800 font-semibold text-gray-700 dark:text-gray-300">
-                                Clock Out
+                                {t('th_clock_out')}
                             </TableHead>
                             <TableHead className="sticky top-0 z-10 bg-gray-100 dark:bg-gray-800 font-semibold text-gray-700 dark:text-gray-300">
-                                Total Hours
+                                {t('th_total_hours')}
                             </TableHead>
                             <TableHead className="sticky top-0 z-10 bg-gray-100 dark:bg-gray-800 font-semibold text-gray-700 dark:text-gray-300">
-                                Status
+                                {t('th_status')}
                             </TableHead>
                         </TableRow>
                     </TableHeader>

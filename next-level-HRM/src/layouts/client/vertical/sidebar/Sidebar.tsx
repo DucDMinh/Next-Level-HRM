@@ -6,6 +6,7 @@ import { Link, useLocation } from 'react-router';
 import { useTheme } from 'src/components/provider/theme-provider';
 import { AMLogo, AMMenu, AMMenuItem, AMSidebar } from 'tailwind-sidebar';
 import 'tailwind-sidebar/styles.css';
+import { useTranslation } from 'react-i18next';
 
 interface SidebarItemType {
   heading?: string
@@ -22,6 +23,7 @@ interface SidebarItemType {
 const renderSidebarItems = (
   items: SidebarItemType[],
   currentPath: string,
+  t: (key: string) => string,
   onClose?: () => void,
   isSubItem: boolean = false,
 ) => {
@@ -39,7 +41,7 @@ const renderSidebarItems = (
       return (
         <div className="mb-1" key={item.heading}>
           <AMMenu
-            subHeading={item.heading}
+            subHeading={t(item.heading)}
             ClassName="hide-menu leading-21 text-sidebar-foreground font-bold uppercase text-xs dark:text-sidebar-foreground"
           />
         </div>
@@ -70,7 +72,7 @@ const renderSidebarItems = (
           component={Link}
           className={`${itemClassNames}`}
         >
-          <span className="truncate flex-1">{item.title || item.name}</span>
+          <span className="truncate flex-1">{t((item.title || item.name) as string)}</span>
         </AMMenuItem>
       </div>
     );
@@ -81,6 +83,7 @@ const SidebarLayout = ({ onClose }: { onClose?: () => void }) => {
   const location = useLocation();
   const pathname = location.pathname;
   const { theme } = useTheme();
+  const { t } = useTranslation('client/sidebar/sidebar');
   const sidebarMode = theme === 'light' || theme === 'dark' ? theme : undefined;
 
   return (
@@ -109,6 +112,7 @@ const SidebarLayout = ({ onClose }: { onClose?: () => void }) => {
                   ...(section.children || []),
                 ],
                 pathname,
+                t,
                 onClose,
               )}
             </div>

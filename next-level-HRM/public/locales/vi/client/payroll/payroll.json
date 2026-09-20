@@ -1,0 +1,17 @@
+{
+    "title_payslip": "Phiếu lương tháng {{month}}/{{year}}",
+    "badge_finalized": "Đã chốt",
+    "badge_pending": "Chờ chốt",
+    "label_payroll_period": "Kỳ lương",
+    "label_base_salary": "Lương cơ bản",
+    "label_actual_standard_days": "Ngày công thực tế / Chuẩn",
+    "label_adjustments": "Thưởng / Phạt",
+    "label_net_pay": "Thực nhận",
+    "title_breakdown": "Chi tiết bảng lương",
+    "row_salary_by_days": "Lương theo ngày công",
+    "row_salary_by_days_desc": "({{rate}} / ngày) × {{days}} ngày",
+    "row_other_adjustments": "Điều chỉnh khác (Thưởng / Phạt)",
+    "note_prefix": "Ghi chú: {{note}}",
+    "row_total_net": "Tổng thu nhập thực nhận",
+    "no_data": "Không có dữ liệu"
+}

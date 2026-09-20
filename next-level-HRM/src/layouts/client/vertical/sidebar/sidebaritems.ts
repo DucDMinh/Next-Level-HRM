@@ -35,31 +35,31 @@ const SidebarContent: MenuItem[] = [
   {
     children: [
       {
-        name: 'Dashboard',
+        name: 'menu_dashboard',
         icon: 'solar:widget-2-linear',
         id: uniqueId(),
         url: '/',
       },
       {
-        name: 'Attendance',
+        name: 'menu_attendance',
         icon: 'solar:calendar-mark-linear',
         id: uniqueId(),
         url: '/attendance',
       },
       {
-        name: 'Leave Requests',
+        name: 'menu_leave_request',
         icon: 'solar:document-add-linear',
         id: uniqueId(),
         url: '/leave-request',
       },
       {
-        name: 'Workdays & Payroll',
+        name: 'menu_payroll',
         icon: 'solar:wallet-money-linear',
         id: uniqueId(),
         url: '/payroll',
       },
       {
-        name: 'Settings',
+        name: 'menu_settings',
         icon: 'solar:settings-linear',
         id: uniqueId(),
         url: '/admin',

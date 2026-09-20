@@ -6,13 +6,14 @@ import { useEffect, useMemo, useState } from 'react';
 import { AttendanceData } from 'src/interface';
 import { toast } from 'sonner';
 import { api } from 'src/lib/apiClient';
+import { useTranslation } from 'react-i18next';
 
-export const AttendanceStatus = ({ currentLogin, setCurrentLogin, attendanceData, setAttendanceData }: {
+export const AttendanceStatus = ({ currentLogin, setCurrentLogin, setAttendanceData }: {
     currentLogin?: AttendanceData,
     setCurrentLogin: React.Dispatch<React.SetStateAction<AttendanceData | undefined>>,
-    attendanceData: AttendanceData[]
     setAttendanceData: React.Dispatch<React.SetStateAction<AttendanceData[]>>
 }) => {
+    const { t } = useTranslation('client/attendance/attendance');
     const [isChecking, setIsChecking] = useState(false);
     const getAdjustedTime = () => {
         return new Date(Date.now() - 7 * 60 * 60 * 1000);
@@ -30,8 +31,8 @@ export const AttendanceStatus = ({ currentLogin, setCurrentLogin, attendanceData
     }, [currentLogin]);
 
     const formatDay = (date: Date) => {
-        const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-        const dayName = days[date.getDay()];
+        const days = ['day_sunday', 'day_monday', 'day_tuesday', 'day_wednesday', 'day_thursday', 'day_friday', 'day_saturday'];
+        const dayName = t(days[date.getDay()]);
         const day = String(date.getDate()).padStart(2, '0');
         const month = String(date.getMonth() + 1).padStart(2, '0');
         const year = date.getFullYear();
@@ -75,7 +76,7 @@ export const AttendanceStatus = ({ currentLogin, setCurrentLogin, attendanceData
                 return
             }
             setCurrentLogin(data)
-            setAttendanceData([...attendanceData, data])
+            setAttendanceData(prev => [data, ...prev])
             setIsChecking(false)
         } catch (error: any) {
 
@@ -100,7 +101,7 @@ export const AttendanceStatus = ({ currentLogin, setCurrentLogin, attendanceData
             <div className="p-6 flex flex-col md:flex-row items-center justify-between gap-6">
                 <div className="flex flex-col items-center md:items-start gap-2">
                     <h2 className="text-xl font-semibold text-gray-800 dark:text-white">
-                        Today's Attendance
+                        {t('title_today_attendance')}
                     </h2>
                     <div className="flex items-center gap-4 mt-2">
                         <div className="flex items-center gap-1.5 text-gray-500 dark:text-gray-400">
@@ -117,12 +118,12 @@ export const AttendanceStatus = ({ currentLogin, setCurrentLogin, attendanceData
                         {currentLogin ? (
                             <Badge className="bg-green-100 text-green-700 px-3 py-1 flex items-center gap-1.5">
                                 <CheckCircle2 className="size-4" />
-                                Currently clocked in {formatTime(checkIn ? checkIn : currentTime)}
+                                {t('badge_clocked_in', { time: formatTime(checkIn ? checkIn : currentTime) })}
                             </Badge>
                         ) : (
                             <Badge className="bg-gray-100 text-gray-700 px-3 py-1 flex items-center gap-1.5">
                                 <AlertCircle className="size-4" />
-                                You have not clocked in yet
+                                {t('badge_not_clocked_in')}
                             </Badge>
                         )}
                     </div>
@@ -138,7 +139,7 @@ export const AttendanceStatus = ({ currentLogin, setCurrentLogin, attendanceData
                             size="lg"
                             className="bg-primary hover:bg-primary/90 text-white rounded-xl px-8 py-6 text-lg font-semibold shadow-lg shadow-primary/30 flex items-center gap-2 transition-all"
                         >
-                            {isChecking ? <>Loading...</> : <><LogIn className="size-6" />Check In</>}
+                            {isChecking ? <>{t('loading')}</> : <><LogIn className="size-6" />{t('btn_check_in')}</>}
 
                         </Button>
                     ) : (
@@ -149,7 +150,7 @@ export const AttendanceStatus = ({ currentLogin, setCurrentLogin, attendanceData
                             variant="destructive"
                             className="rounded-xl px-8 py-6 text-lg font-semibold shadow-lg shadow-red-500/30 flex items-center gap-2 transition-all"
                         >
-                            {isChecking ? <>Loading...</> : <><LogOut className="size-6" />Check Out</>}
+                            {isChecking ? <>{t('loading')}</> : <><LogOut className="size-6" />{t('btn_check_out')}</>}
                         </Button>
                     )}
                 </div>

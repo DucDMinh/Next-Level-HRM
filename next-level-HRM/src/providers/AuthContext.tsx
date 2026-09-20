@@ -79,6 +79,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             const { response, data } = await api.post('/login', { username: username, password: password })
             if (!response.ok) {
                 toast.error(data.message)
+                return;
             }
             setToken(data.token);
             userUtils.saveAccessToken(data.token);

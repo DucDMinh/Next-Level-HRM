@@ -6,8 +6,10 @@ import { useState } from 'react';
 import { api } from 'src/lib/apiClient';
 import { toast } from 'sonner';
 import { LeaveRequest } from 'src/interface';
+import { useTranslation } from 'react-i18next';
 
 export const CreateLeaveRequestForm = ({ leaveRequestData, setLeaveRequestData }: { leaveRequestData: LeaveRequest[], setLeaveRequestData: React.Dispatch<React.SetStateAction<LeaveRequest[]>> }) => {
+    const { t } = useTranslation('client/leave-request/leave-request');
     const [isSending, setIsSending] = useState(false)
     const [formData, setFormData] = useState({
         fromDate: '',
@@ -24,7 +26,7 @@ export const CreateLeaveRequestForm = ({ leaveRequestData, setLeaveRequestData }
             setIsSending(true)
             const { response, data } = await api.post('/api/leave-requests', formData)
             if (!response.ok) throw new Error(data.message);
-            toast.success("Ok")
+            toast.success(t('toast_success'))
             if (data) {
                 setLeaveRequestData([...leaveRequestData, data])
                 setFormData({
@@ -49,14 +51,14 @@ export const CreateLeaveRequestForm = ({ leaveRequestData, setLeaveRequestData }
                             <FileText className="size-5" />
                         </div>
                         <h2 className="text-xl font-semibold text-gray-800 dark:text-white">
-                            Create Leave Request
+                            {t('title_create')}
                         </h2>
                     </div>
 
                     <form className="flex flex-col gap-5" onSubmit={handleSendRequest}>
                         <div className="flex flex-col gap-2">
                             <Label htmlFor="startDate" className="text-gray-600 dark:text-gray-300">
-                                From Date <span className="text-red-500">*</span>
+                                {t('label_from_date')} <span className="text-red-500">*</span>
                             </Label>
                             <div className="relative">
                                 <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-500 pointer-events-none z-10" />
@@ -79,7 +81,7 @@ export const CreateLeaveRequestForm = ({ leaveRequestData, setLeaveRequestData }
 
                         <div className="flex flex-col gap-2">
                             <Label htmlFor="startDate" className="text-gray-600 dark:text-gray-300">
-                                To Date <span className="text-red-500">*</span>
+                                {t('label_to_date')} <span className="text-red-500">*</span>
                             </Label>
                             <div className="relative">
                                 <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-500 pointer-events-none z-10" />
@@ -100,7 +102,7 @@ export const CreateLeaveRequestForm = ({ leaveRequestData, setLeaveRequestData }
                         </div>
                         <div className="flex flex-col gap-2">
                             <Label htmlFor="reason" className="text-gray-600 dark:text-gray-300">
-                                Reason for Leave <span className="text-red-500">*</span>
+                                {t('label_reason')} <span className="text-red-500">*</span>
                             </Label>
                             <textarea
                                 id="reason"
@@ -108,7 +110,7 @@ export const CreateLeaveRequestForm = ({ leaveRequestData, setLeaveRequestData }
                                 rows={4}
                                 value={formData.reason}
                                 onChange={handleChange}
-                                placeholder="Please provide detailed reasons for your leave..."
+                                placeholder={t('placeholder_reason')}
                                 className="w-full p-3 text-sm rounded-lg border border-gray-200 dark:border-white/10 bg-transparent focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all resize-none text-gray-800 dark:text-white placeholder:text-gray-400"
                             ></textarea>
                         </div>
@@ -116,7 +118,7 @@ export const CreateLeaveRequestForm = ({ leaveRequestData, setLeaveRequestData }
                             type="submit"
                             className="w-full h-12 mt-2 rounded-xl text-base font-semibold shadow-lg shadow-primary/20 flex items-center gap-2"
                         >
-                            {isSending ? <>Loading...</> : <><Send className="size-4" />Submit Request</>}
+                            {isSending ? <>{t('loading')}</> : <><Send className="size-4" />{t('btn_submit')}</>}
                         </Button>
                     </form>
                 </div>

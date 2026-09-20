@@ -27,7 +27,7 @@ const formatTime = (isoString?: string) => {
 };
 
 const EmployeeDashboard = () => {
-    const { t } = useTranslation('common');
+    const { t } = useTranslation('client/dashboard/dashboard');
     const {
         myData,
         isFetching,
@@ -35,6 +35,7 @@ const EmployeeDashboard = () => {
         lastLogin, leaveRequest, payroll,
         loadData
     } = useDashboard()
+    const currentMonth = String(new Date().getMonth() + 1).padStart(2, '0');
 
     useEffect(() => {
         console.log(`checkIn: ${lastLogin}`)
@@ -60,11 +61,11 @@ const EmployeeDashboard = () => {
                         disabled={isFetching}
                     >
                         <RefreshCw className={`size-4 mr-2 ${isFetching ? 'animate-spin text-primary' : 'text-gray-500'}`} />
-                        Refresh
+                        {t('btn_refresh')}
                     </Button>
 
                     <Button variant="outline" className="bg-white dark:bg-gray-900 shadow-sm border-gray-200 text-primary" asChild>
-                        <Link to="/employee/leave-requests/new">+ Request Leave</Link>
+                        <Link to="/leave-request">{t('btn_request_leave')}</Link>
                     </Button>
                 </div>
             </div>
@@ -82,15 +83,15 @@ const EmployeeDashboard = () => {
                     <div>
                         <p className={`text-sm font-bold uppercase tracking-wider text-[11px] ${time.checkIn ? 'text-emerald-600/80' : 'text-red-600/80'
                             }`}>
-                            Today's Status
+                            {t('label_today_status')}
                         </p>
                         <p className={`text-xl font-black mt-0.5 ${time.checkIn ? 'text-emerald-600' : 'text-red-600'
                             }`}>
-                            {time.checkIn ? 'Checked In' : 'Not Checked In'}
+                            {time.checkIn ? t('status_checked_in') : t('status_not_checked_in')}
                         </p>
                         {time.checkIn && (
                             <p className="text-xs font-medium text-emerald-600/70 mt-1">
-                                at {formatTime(time.checkIn.toString())}
+                                {t('at_time', { time: formatTime(time.checkIn.toString()) })}
                             </p>
                         )}
                     </div>
@@ -100,10 +101,10 @@ const EmployeeDashboard = () => {
                         <CalendarClock className="size-6" />
                     </div>
                     <div>
-                        <p className="text-sm text-gray-500 font-medium">Pending Approvals</p>
+                        <p className="text-sm text-gray-500 font-medium">{t('label_pending_approvals')}</p>
                         <div className="flex justify-center items-baseline gap-1.5 mt-0.5">
                             <p className="text-2xl font-bold text-gray-900 dark:text-white"></p>
-                            <span className="text-sm font-normal text-gray-400">{leaveRequest.length} requests</span>
+                            <span className="text-sm font-normal text-gray-400">{t('count_requests', { count: leaveRequest.length })}</span>
                         </div>
                     </div>
                 </CardBox>
@@ -112,10 +113,10 @@ const EmployeeDashboard = () => {
                         <Briefcase className="size-6" />
                     </div>
                     <div>
-                        <p className="text-sm text-gray-500 font-medium">Days Worked (Sep)</p>
+                        <p className="text-sm text-gray-500 font-medium">{t('label_days_worked', { month: currentMonth })}</p>
                         <div className="flex justify-center items-baseline gap-1.5 mt-0.5">
                             <p className="text-2xl font-bold text-gray-900 dark:text-white"></p>
-                            <span className="text-sm font-normal text-gray-400">{payroll?.actualWorkDays} days</span>
+                            <span className="text-sm font-normal text-gray-400">{t('count_days', { count: payroll?.actualWorkDays ?? 0 })}</span>
                         </div>
                     </div>
                 </CardBox>
@@ -125,15 +126,15 @@ const EmployeeDashboard = () => {
 
                 <CardBox className="lg:col-span-2 flex flex-col h-full">
                     <div className="p-5 border-b border-gray-100 dark:border-gray-800">
-                        <h2 className="text-lg font-bold text-gray-800 dark:text-white">Today's Schedule</h2>
+                        <h2 className="text-lg font-bold text-gray-800 dark:text-white">{t('title_today_schedule')}</h2>
                     </div>
 
                     <div className="flex-1 p-8 flex flex-col items-center justify-center text-center">
                         {!lastLogin ? (
-                            <div className="text-gray-500">No Data</div>
+                            <div className="text-gray-500">{t('no_data')}</div>
                         ) : (
                             <div className="bg-gray-50 dark:bg-gray-800/50 rounded-2xl p-8 border border-gray-100 dark:border-gray-800 w-full max-w-md shadow-sm">
-                                <h3 className="text-sm font-medium text-gray-500 mb-2 uppercase tracking-wide">Assigned Shift</h3>
+                                <h3 className="text-sm font-medium text-gray-500 mb-2 uppercase tracking-wide">{t('label_assigned_shift')}</h3>
                                 <p className="text-xl font-bold text-gray-900 dark:text-white mb-8">
 
                                 </p>
@@ -145,7 +146,7 @@ const EmployeeDashboard = () => {
                                         <div className={`size-12 rounded-full flex items-center justify-center border-4 border-white dark:border-gray-900 shadow-sm ${time.lastCheckIn ? 'bg-emerald-500 text-white' : 'bg-gray-200 text-gray-400'}`}>
                                             <Clock className="size-5" />
                                         </div>
-                                        <p className="text-sm font-bold text-gray-800 dark:text-white mt-3">Check In</p>
+                                        <p className="text-sm font-bold text-gray-800 dark:text-white mt-3">{t('check_in')}</p>
 
                                         <p className="text-xs text-gray-500 font-medium mt-0.5">
                                             {time.lastCheckIn ? formatTime(time.lastCheckIn?.toString()) : '--:--'}
@@ -156,7 +157,7 @@ const EmployeeDashboard = () => {
                                         <div className={`size-12 rounded-full flex items-center justify-center border-4 border-white dark:border-gray-900 shadow-sm ${time.lastCheckOut ? 'bg-amber-500 text-white' : 'bg-gray-200 text-gray-400'}`}>
                                             <LogOut className="size-5" />
                                         </div>
-                                        <p className="text-sm font-bold text-gray-800 dark:text-white mt-3">Check Out</p>
+                                        <p className="text-sm font-bold text-gray-800 dark:text-white mt-3">{t('check_out')}</p>
                                         <p className="text-xs text-gray-500 font-medium mt-0.5">
                                             {time.lastCheckOut ? formatTime(time.lastCheckOut?.toString()) : '--:--'}
                                         </p>
@@ -169,15 +170,15 @@ const EmployeeDashboard = () => {
 
                 <div className="space-y-6">
                     <CardBox className="p-5">
-                        <h2 className="text-lg font-bold text-gray-800 dark:text-white mb-4">Quick Links</h2>
+                        <h2 className="text-lg font-bold text-gray-800 dark:text-white mb-4">{t('title_quick_links')}</h2>
                         <div className="flex flex-col gap-3">
                             <Link to="/leave-request" className="flex items-center gap-4 p-3 rounded-lg border border-gray-100 dark:border-gray-800 hover:border-amber-300 hover:bg-amber-50 dark:hover:bg-amber-900/10 transition-colors group">
                                 <div className="p-2 bg-amber-100 text-amber-600 rounded-md group-hover:bg-amber-200 transition-colors">
                                     <Coffee className="size-4" />
                                 </div>
                                 <div className="flex-1">
-                                    <p className="text-sm font-bold text-gray-800 dark:text-white">My Leave Requests</p>
-                                    <p className="text-xs text-gray-500">View history & approvals</p>
+                                    <p className="text-sm font-bold text-gray-800 dark:text-white">{t('link_leave_title')}</p>
+                                    <p className="text-xs text-gray-500">{t('link_leave_desc')}</p>
                                 </div>
                             </Link>
 
@@ -186,8 +187,8 @@ const EmployeeDashboard = () => {
                                     <Calendar className="size-4" />
                                 </div>
                                 <div className="flex-1">
-                                    <p className="text-sm font-bold text-gray-800 dark:text-white">Timesheet</p>
-                                    <p className="text-xs text-gray-500">Check detailed attendance</p>
+                                    <p className="text-sm font-bold text-gray-800 dark:text-white">{t('link_timesheet_title')}</p>
+                                    <p className="text-xs text-gray-500">{t('link_timesheet_desc')}</p>
                                 </div>
                             </Link>
 
@@ -196,8 +197,8 @@ const EmployeeDashboard = () => {
                                     <Wallet className="size-4" />
                                 </div>
                                 <div className="flex-1">
-                                    <p className="text-sm font-bold text-gray-800 dark:text-white">My Payslip</p>
-                                    <p className="text-xs text-gray-500">View salary details</p>
+                                    <p className="text-sm font-bold text-gray-800 dark:text-white">{t('link_payslip_title')}</p>
+                                    <p className="text-xs text-gray-500">{t('link_payslip_desc')}</p>
                                 </div>
                             </Link>
                         </div>

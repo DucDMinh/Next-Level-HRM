@@ -9,6 +9,7 @@ import { useTheme } from 'src/components/provider/theme-provider';
 import { Sheet, SheetContent, SheetTitle } from 'src/components/ui/sheet';
 import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
 import Search from './Search';
+import LanguageSwitcher from 'src/components/LanguageSwitcher';
 
 const Header = () => {
   const { theme, setTheme } = useTheme();
@@ -83,6 +84,7 @@ const Header = () => {
 
           <div className="xl:!block !hidden md:!hidden">
             <div className="flex gap-0 items-center">
+              <LanguageSwitcher />
               {/* Theme Toggle */}
               {theme === 'light' ? (
                 <div
@@ -120,6 +122,7 @@ const Header = () => {
           <span className="flex xl:hidden " onClick={handleMobileMenu}>
             <div className="xl:hidden flex w-full">
               <div className="flex justify-center items-center">
+                <LanguageSwitcher />
                 {theme === 'light' ? (
                   <div
                     className="hover:text-primary px-1 sm:px-15 group  dark:hover:text-primary focus:ring-0 rounded-full flex justify-center items-center cursor-pointer text-foreground dark:text-muted-foreground relative"

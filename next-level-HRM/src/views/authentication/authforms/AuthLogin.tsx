@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router';
+import { useTranslation } from 'react-i18next';
 import { Button } from 'src/components/ui/button';
 import { Checkbox } from 'src/components/ui/checkbox';
 import { Input } from 'src/components/ui/input';
@@ -8,6 +9,7 @@ import { useAuth } from 'src/providers/AuthContext';
 
 const AuthLogin = () => {
   const navigation = useNavigate();
+  const { t } = useTranslation('auth/login/login');
   const { isAuthenticated, login, isLogging } = useAuth();
 
   const [formData, setFormData] = useState({
@@ -31,7 +33,7 @@ const AuthLogin = () => {
       <form className="mt-6" onSubmit={handleLogin}>
         <div className="mb-4">
           <div className="mb-2 block">
-            <Label htmlFor="Username">Username</Label>
+            <Label htmlFor="username">{t('label_username')}</Label>
           </div>
           <Input
             id="username"
@@ -42,7 +44,7 @@ const AuthLogin = () => {
         </div>
         <div className="mb-4">
           <div className="mb-2 block">
-            <Label htmlFor="password">Password</Label>
+            <Label htmlFor="password">{t('label_password')}</Label>
           </div>
           <Input
             id="password"
@@ -55,15 +57,15 @@ const AuthLogin = () => {
           <div className="flex items-center gap-2">
             <Checkbox id="accept" className="checkbox" />
             <Label htmlFor="accept" className="opacity-90 font-normal cursor-pointer">
-              Remember this Device
+              {t('remember_device')}
             </Label>
           </div>
           <Link to={'/'} className="text-primary text-sm font-medium">
-            Forgot Password ?
+            {t('forgot_password')}
           </Link>
         </div>
         <Button className="w-full">
-          {isLogging ? 'Loading...' : 'Sign in'}
+          {isLogging ? t('btn_loading') : t('btn_sign_in')}
         </Button>
       </form>
     </>

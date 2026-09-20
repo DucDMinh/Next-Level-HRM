@@ -14,6 +14,7 @@ import { PayrollRecord } from 'src/interface';
 import { toast } from 'sonner';
 import { api } from 'src/lib/apiClient';
 import Spinner from 'src/views/admin/spinner/Spinner';
+import { useTranslation } from 'react-i18next';
 const formatMoney = (amount: number | string | null | undefined) => {
     if (amount == null) return '0';
     const num = typeof amount === 'string' ? parseInt(amount) : amount;
@@ -22,7 +23,7 @@ const formatMoney = (amount: number | string | null | undefined) => {
 };
 
 const EmployeePayrollPage = () => {
-
+    const { t } = useTranslation('client/payroll/payroll');
     const currentMonth = new Date().toISOString().slice(0, 7);
     const [payrollPeriod, setPayrollPeriod] = useState(currentMonth);
     const [isLoading, setIsLoading] = useState(false)
@@ -60,17 +61,17 @@ const EmployeePayrollPage = () => {
                         <Receipt className="size-5" />
                     </div>
                     <h2 className="text-xl font-bold text-gray-800 dark:text-white">
-                        Payslip for {payrollPeriod.split('-')[1]}/{payrollPeriod.split('-')[0]}
+                        {t('title_payslip', { month: payrollPeriod.split('-')[1], year: payrollPeriod.split('-')[0] })}
                     </h2>
                     {payrollData ? (
-                        <span className="ml-2 px-2.5 py-1 rounded-full bg-green-100 text-green-700 text-xs font-semibold">Finalized</span>
+                        <span className="ml-2 px-2.5 py-1 rounded-full bg-green-100 text-green-700 text-xs font-semibold">{t('badge_finalized')}</span>
                     ) : (
-                        <span className="ml-2 px-2.5 py-1 rounded-full bg-amber-100 text-amber-700 text-xs font-semibold">Pending</span>
+                        <span className="ml-2 px-2.5 py-1 rounded-full bg-amber-100 text-amber-700 text-xs font-semibold">{t('badge_pending')}</span>
                     )}
                 </div>
 
                 <div className="flex flex-col gap-2 w-full sm:w-48">
-                    <Label className="text-xs text-gray-500 uppercase font-semibold">Payroll Period</Label>
+                    <Label className="text-xs text-gray-500 uppercase font-semibold">{t('label_payroll_period')}</Label>
                     <div className="relative">
                         <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
                         <input
@@ -92,7 +93,7 @@ const EmployeePayrollPage = () => {
                                     <Wallet className="size-6" />
                                 </div>
                                 <div>
-                                    <p className="text-sm text-gray-500 font-medium">Base Salary</p>
+                                    <p className="text-sm text-gray-500 font-medium">{t('label_base_salary')}</p>
                                     <p className="text-lg font-bold text-gray-900 dark:text-white">{formatMoney(payrollData.totalPay)}</p>
                                 </div>
                             </div>
@@ -101,7 +102,7 @@ const EmployeePayrollPage = () => {
                                     <Calendar className="size-6" />
                                 </div>
                                 <div>
-                                    <p className="text-sm text-gray-500 font-medium">Actual / Standard Days</p>
+                                    <p className="text-sm text-gray-500 font-medium">{t('label_actual_standard_days')}</p>
                                     <p className="text-lg font-bold text-gray-900 dark:text-white">
                                         {payrollData.actualWorkDays} <span className="text-sm text-gray-400 font-normal">/ {payrollData.standardWorkDays}</span>
                                     </p>
@@ -112,7 +113,7 @@ const EmployeePayrollPage = () => {
                                     <TrendingDown className="size-6" />
                                 </div>
                                 <div>
-                                    <p className="text-sm text-gray-500 font-medium">Adjustments / Penalties</p>
+                                    <p className="text-sm text-gray-500 font-medium">{t('label_adjustments')}</p>
                                     <p className="text-lg font-bold text-orange-600">{formatMoney(payrollData.adjustment)}</p>
                                 </div>
                             </div>
@@ -121,7 +122,7 @@ const EmployeePayrollPage = () => {
                                     <TrendingUp className="size-6" />
                                 </div>
                                 <div>
-                                    <p className="text-sm text-primary/80 font-medium uppercase tracking-wider text-[11px]">Net Pay</p>
+                                    <p className="text-sm text-primary/80 font-medium uppercase tracking-wider text-[11px]">{t('label_net_pay')}</p>
                                     <p className="text-2xl font-black text-primary">{formatMoney(payrollData.baseSalary / payrollData.standardWorkDays * payrollData.actualWorkDays)}</p>
                                 </div>
                             </div>
@@ -130,16 +131,16 @@ const EmployeePayrollPage = () => {
                             <div className="p-4 bg-gray-50/80 dark:bg-white/5 border-b border-gray-200 dark:border-gray-800">
                                 <h3 className="font-semibold text-gray-800 dark:text-white flex items-center gap-2">
                                     <Info className="size-4 text-gray-500" />
-                                    Salary Breakdown Details
+                                    {t('title_breakdown')}
                                 </h3>
                             </div>
 
                             <div className="p-0">
                                 <div className="flex justify-between items-center p-4 border-b border-gray-100 dark:border-gray-800 hover:bg-gray-50/50 transition-colors">
                                     <div>
-                                        <p className="font-medium text-gray-800 dark:text-gray-200">Salary by Work Days</p>
+                                        <p className="font-medium text-gray-800 dark:text-gray-200">{t('row_salary_by_days')}</p>
                                         <p className="text-xs text-gray-500 mt-0.5">
-                                            ({formatMoney(Math.round(payrollData.standardWorkDays))} / day) × {payrollData.actualWorkDays} days
+                                            {t('row_salary_by_days_desc', { rate: formatMoney(Math.round(payrollData.standardWorkDays)), days: payrollData.actualWorkDays })}
                                         </p>
                                     </div>
                                     <span className="font-semibold text-gray-900 dark:text-white">
@@ -148,9 +149,9 @@ const EmployeePayrollPage = () => {
                                 </div>
                                 <div className="flex justify-between items-center p-4 border-b border-gray-100 dark:border-gray-800 hover:bg-gray-50/50 transition-colors">
                                     <div>
-                                        <p className="font-medium text-gray-800 dark:text-gray-200">Other Adjustments (Bonus / Penalty)</p>
+                                        <p className="font-medium text-gray-800 dark:text-gray-200">{t('row_other_adjustments')}</p>
                                         {payrollData.note && (
-                                            <p className="text-xs text-gray-500 mt-0.5 italic">Note: {payrollData.note}</p>
+                                            <p className="text-xs text-gray-500 mt-0.5 italic">{t('note_prefix', { note: payrollData.note })}</p>
                                         )}
                                     </div>
                                     <span className={`font-semibold ${payrollData.adjustment < 0 ? 'text-red-500' : 'text-green-600'}`}>
@@ -158,7 +159,7 @@ const EmployeePayrollPage = () => {
                                     </span>
                                 </div>
                                 <div className="flex justify-between items-center p-5 bg-gray-50/50 dark:bg-black/20">
-                                    <span className="font-bold text-gray-900 dark:text-white text-lg">Total Net Income</span>
+                                    <span className="font-bold text-gray-900 dark:text-white text-lg">{t('row_total_net')}</span>
                                     <span className="text-2xl font-black text-primary">
                                         {formatMoney(payrollData.totalPay)}
                                     </span>
@@ -172,7 +173,7 @@ const EmployeePayrollPage = () => {
                         <Inbox className="size-12 text-gray-400 dark:text-gray-500 stroke-[1.5]" />
                     </div>
                     <h3 className="text-lg font-bold text-gray-700 dark:text-gray-200">
-                        No data
+                        {t('no_data')}
                     </h3>
                 </div>
             }
